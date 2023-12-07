@@ -1,38 +1,33 @@
-.App {
-  text-align: center;
+/* FILEPATH: /home/mathieu_stephan/Documents/SAE 3/cyphercode/src/App.css */
+
+:root {
+  --primary-color: #7C0186;
+  --background-color: #0F0F0F;
+  --text-color: #FBFBFB;
+  --accent-color-1: #4A7856;
+  --accent-color-2: #BCABAE;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+a {
+  color: var(--accent-color-1);
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+#logo {
+  width: 100%;
+  max-width: 300px;
+}
+
+#root {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  min-height: 100vh;
 }
 
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
+/* Add your custom styles here */
