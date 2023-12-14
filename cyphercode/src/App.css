@@ -7,6 +7,16 @@
   --accent-color-1: #4A7856;
   --accent-color-2: #BCABAE;
 }
+@font-face {
+  font-family: FiraCode;
+  src: local("FiraCode"), url(./fonts/FiraCode/FiraCodeNerdFont-Medium.ttf) format("truetype");
+  font-family: Montserrat;
+  src: local("Montserrat"), url(./fonts/Montserrat/Montserrat-VariableFont_wght.ttf) format("truetype");
+}
+
+code {
+  font-family: FiraCode;
+}
 
 body {
   background-color: var(--background-color);
@@ -29,5 +39,3 @@ a {
   justify-content: center;
   min-height: 100vh;
 }
-
-/* Add your custom styles here */
