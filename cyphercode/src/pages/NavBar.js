@@ -19,7 +19,7 @@ const Navbar = () => {
           <Link to="/" className="navbar-link" onClick={toggleNav}>
             Accueil
           </Link>
-          <Link to="/about" className="navbar-link" onClick={toggleNav}>
+          <Link to="/defis" className="navbar-link" onClick={toggleNav}>
             Défis
           </Link>
           <Link to="/contact" className="navbar-link" onClick={toggleNav}>

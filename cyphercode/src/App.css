@@ -1,11 +1,11 @@
 /* FILEPATH: /home/mathieu_stephan/Documents/SAE 3/cyphercode/src/App.css */
 
 :root {
-  --primary-color: #7C0186;
-  --background-color: #0F0F0F;
-  --text-color: #FBFBFB;
-  --accent-color-1: #4A7856;
-  --accent-color-2: #BCABAE;
+  --primary-color: #7DCFB6;
+  --background-color: #F9E9EC;
+  --text-color: #19180A;
+  --accent-color-1: #FAC748;
+  --accent-color-2: #931F1D;
 }
 @font-face {
   font-family: FiraCode;
