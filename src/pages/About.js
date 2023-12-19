@@ -9,7 +9,7 @@ const AboutPage = () => {
                 <img src="Logo_B.png" alt="CypherCode Logo" id="logo" />
                 <h1>Conditions générales d'utilisation</h1>
                 <p>
-                    Ceci est un test...
+                    Ceci est un test pour savoir un truc...
                 </p>
             </div>
         </div>
