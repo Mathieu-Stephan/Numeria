@@ -12,7 +12,7 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="navbar-container">
         <Link to="/" className="navbar-logo">
-          <img src="logo192.png" alt="CypherCode Logo"/>
+          <img src="Logo_A.png" alt="CypherCode Logo"/>
         </Link>
 
         <div className={`navbar-links ${isNavOpen ? 'open' : ''}`}>
@@ -22,14 +22,18 @@ const Navbar = () => {
           <Link to="/defis" className="navbar-link" onClick={toggleNav}>
             Défis
           </Link>
-          <Link to="/contact" className="navbar-link" onClick={toggleNav}>
+          <Link to="/account" className="navbar-link" onClick={toggleNav}>
             Se connecter
           </Link>
-          <Link to="/contact" className="navbar-link" onClick={toggleNav}>
+          <Link to="/createaccount" className="navbar-link" onClick={toggleNav}>
             S'inscrire
           </Link>
           <Link to="/about" className="navbar-link" onClick={toggleNav}>
             A propos
+          </Link>
+          <Link to="/account" className="navbar-link" onClick={toggleNav}>
+          <img src="account.png" alt="account" id="account" />
+            Mon compte
           </Link>
         </div>
 
