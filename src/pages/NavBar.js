@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom'; // Assurez-vous d'installer react-router-dom si vous ne l'avez pas déjà fait
+import { Link } from 'react-router-dom'; 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faUser } from '@fortawesome/free-solid-svg-icons'
 
 const Navbar = () => {
   const [isNavOpen, setNavOpen] = useState(false);
@@ -29,10 +31,10 @@ const Navbar = () => {
             S'inscrire
           </Link>
           <Link to="/about" className="navbar-link" onClick={toggleNav}>
-            A propos
+            CGU
           </Link>
           <Link to="/account" className="navbar-link" onClick={toggleNav}>
-          <img src="account.png" alt="account" id="account" />
+          <FontAwesomeIcon icon={faUser} className="icon" />
             Mon compte
           </Link>
         </div>

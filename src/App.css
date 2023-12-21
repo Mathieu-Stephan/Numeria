@@ -8,10 +8,18 @@
   --accent-color-2: #931F1D;
 }
 @font-face {
-  font-family: FiraCode;
-  src: local("FiraCode"), url(./fonts/FiraCode/FiraCodeNerdFont-Medium.ttf) format("truetype");
   font-family: Montserrat;
   src: local("Montserrat"), url(./fonts/Montserrat/Montserrat-VariableFont_wght.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: open-sans;
+  src: local("open-sans"), url(./fonts/Open_Sans/OpenSans-VariableFont_wdth,wght.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: FiraCode;
+  src: local("FiraCode"), url(./fonts/FiraCode/FiraCodeNerdFontMono-Regular.ttf) format("truetype");
 }
 
 #root {
@@ -40,18 +48,12 @@ a {
 
 #logo{
   display: block;
-  width: 90%;
-  height: 90%;
+  width: 50%;
+  height: 50%;
 }
 
-/**
-<Link to="/account" className="navbar-link" onClick={toggleNav}>
-          <img src="account.png" alt="account" id="account" />
-            Mon compte
-          </Link>
-*/
 
-#account{
+.navbar .icon{
   width: 17px;
   height: 20px;
   margin-right: 10px;
@@ -71,10 +73,16 @@ a {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  text-align: justify;
+  font-family: open-sans, sans-serif;
 }
 
 
-
+h1{
+  font-family: Montserrat;
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
 
 
 /** pour la navbar */
@@ -136,6 +144,11 @@ a {
 
 /* si on est en dessous de 768px de largeur */
 @media screen and (max-width: 768px) {
+
+  #logo{
+    display: none;
+  }
+
   .navbar {
     position: sticky;
     top: 0;
@@ -169,7 +182,7 @@ a {
   }
 
   .navbar-link:hover {
-    background-color: var(--accent-color-1);
+    background-color: var(--primary-color);
     color: var(--background-color);
   }
 
