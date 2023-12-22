@@ -1,5 +1,6 @@
 import React from 'react';
 import Navbar from './NavBar';
+import Footer from './Footer';
 
 const HomePage = () => {
     return (
@@ -7,9 +8,10 @@ const HomePage = () => {
             <Navbar />
             <div className='content'>
                 <img src="Logo_B.png" alt="CypherCode Logo" id="logo" />
-                <h1>Accueil</h1>
-                <p>Je ne sais pas quoi mettre ici, donc je vais juste mettre un lorem ipsum</p>
+                <h1>Numeria</h1>
+                
             </div>
+            <Footer />
         </div>
     );
 }

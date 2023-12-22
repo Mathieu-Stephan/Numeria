@@ -1,5 +1,6 @@
 import React from 'react';
 import Navbar from './NavBar';
+import Footer from './Footer';
 
 const AboutPage = () => {
     return (
@@ -48,6 +49,7 @@ const AboutPage = () => {
                 Merci de votre compréhension et bienvenue sur Numéria !
                 </p> 
             </div>
+            <Footer />
         </div>
     );
 };

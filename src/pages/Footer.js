@@ -1,3 +1,6 @@
+import React from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faGithub, faGitlab } from '@fortawesome/free-brands-svg-icons';
 
 const Footer = () => {
     return (
@@ -5,11 +8,16 @@ const Footer = () => {
             <div className="footer-container">
                 <div className="footer-links">
                     <a href="https://github.com/nathan-basol" className="footer-link">
-                        <img src="https://akademi.robotistan.com/wp-content/uploads/2022/07/github_logo.png" alt="GitHub Logo" />
+                        <FontAwesomeIcon icon={faGithub} />
+                        <p>GitHub</p>
+                    </a>
+                    <a href="https://gitlab.com/sae-defi-cyphercode/SDJJ-Numeria " className="footer-link">
+                        <FontAwesomeIcon icon={faGitlab} />
+                        <p>GitLab</p>
                     </a>
                 </div>
                 <div className="footer-text">
-                    <p>© 2021 Numeria</p>
+                    <p>© 2023 Numeria</p>
                     <p>Tous droits réservés</p>
                 </div>
             </div>
