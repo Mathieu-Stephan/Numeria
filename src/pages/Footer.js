@@ -17,7 +17,7 @@ const Footer = () => {
                     </a>
                 </div>
                 <div className="footer-text">
-                    <p>© 2023 Numeria</p>
+                    <p>© 2024 Numeria</p>
                     <p>Tous droits réservés</p>
                 </div>
             </div>
