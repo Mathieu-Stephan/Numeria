@@ -9,10 +9,11 @@ const port = 3001;
 app.use(cors());
 
 const connection = mysql.createConnection({
-  host: 'localhost',
+  host: 'mysql',//mysql pour docker, localhost pour local
   user: 'root',
+  password: 'defiut23',
   port: 3306,
-  database: 'numeriabdd'
+  database: 'defiut'//defiut pour docker, numeriabdd (ou ce que tu as) pour local
 });
 
 connection.connect(function(err) {
@@ -23,8 +24,12 @@ connection.connect(function(err) {
 // Exemple de point de terminaison pour obtenir des données depuis la base de données
 app.get('/api/data', (req, res) => {
   connection.query('SELECT * FROM defi', (error, results, fields) => {
-    if (error) throw error;
+    if (error) {
+      res.status(500).json({ error: 'Erreur lors de la récupération des données depuis la base de données' });
+      return;
+    }
     res.json(results);
+    console.log(results);
   });
 });
 
