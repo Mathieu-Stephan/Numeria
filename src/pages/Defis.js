@@ -33,7 +33,7 @@ const Defis = () => {
                         <div className="defi-card">
                             <h2>{defi.titre}</h2>
                             <p>{defi.description}</p>
-                            {/* Affichage du nombre d'étoiles */}
+                            {/* Affichage des étoiles */}
                             <div>
                                 {[...Array(defi.etoiles)].map((star, index) => (
                                     <span key={index} className="star">&#9733;</span>

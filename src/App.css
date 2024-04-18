@@ -371,3 +371,13 @@ Page défis
 .star {
   color: gold;
 }
+
+.defi-square {
+  width: calc(33.33% - 20px);
+}
+
+@media (max-width: 768px) {
+  .defi-square {
+      width: calc(100% - 20px);
+  }
+}
