@@ -330,3 +330,44 @@ h1{
   background-color: var(--secondary-color);
 }
   
+
+
+
+
+/*
+Page défis
+*/
+.content {
+  text-align: center;
+}
+
+.defis-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.defi-square {
+  width: calc(33.33% - 20px);
+}
+
+.defi-card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  text-align: center;
+}
+
+.defi-card h2 {
+  margin-top: 0;
+}
+
+.defi-card p {
+  margin-bottom: 10px;
+}
+
+.star {
+  color: gold;
+}
