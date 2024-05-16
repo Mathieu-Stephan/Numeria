@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from './NavBar';
 import Footer from './Footer';
-
 const HomePage = () => {
     const [defiData, setDefiData] = useState([]);
 
     useEffect(() => {
-        fetch('/api/data')
+        fetch('localhost:3001/api/data')
             .then(response => response.json())
             .then(data => setDefiData(data))
             .catch(error => console.error('Erreur lors de la récupération des données', error));
