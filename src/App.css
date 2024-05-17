@@ -381,3 +381,107 @@ Page défis
       width: calc(100% - 20px);
   }
 }
+
+
+
+
+
+.input-container {
+  margin-bottom: 20px;
+}
+
+.input-container label {
+  display: none; /* Cacher les libellés */
+}
+
+.input-container input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 20px; /* Arrondir les champs */
+  position: relative; /* Position relative pour positionner le libellé */
+}
+
+.input-container input + label {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  pointer-events: none; /* Empêcher le clic sur le libellé */
+  color: #ccc; /* Couleur grise pour le libellé lorsque le champ est vide */
+  transition: all 0.3s ease; /* Transition fluide pour le libellé */
+}
+
+.input-container input:focus + label, .input-container input:not(:placeholder-shown) + label {
+  top: 0;
+  font-size: 0.8em; /* Réduire la taille du libellé lorsqu'il est au-dessus du champ */
+  color: #120a19; /* Couleur du texte lorsque le champ est actif ou rempli */
+}
+
+.error {
+  color: black; /* Texte en noir */
+  font-size: 0.875rem;
+  margin-top: 5px;
+}
+
+.submit-button {
+  background-color: #7DCFB6; /* Vert */
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px; /* Arrondir le bouton */
+  cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.submit-button:hover {
+  background-color: #ff76ac; /* Rose */
+}
+
+/* Page SignIn et SignUp */
+/* Page SignIn et SignUp */
+
+.input-container {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.input-container input {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid transparent;
+  border-radius: 20px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease-in-out;
+}
+
+.input-container input:focus {
+  outline: none;
+  border-color: var(--secondary-color);
+}
+
+.input-container label {
+  position: absolute;
+  top: 50%;
+  left: 20px;
+  transform: translateY(-50%);
+  color: var(--text-color);
+  font-size: 0.9rem;
+  pointer-events: none;
+  transition: top 0.3s, left 0.3s, transform 0.3s, font-size 0.3s;
+}
+
+.input-container input:focus + label,
+.input-container input:not(:placeholder-shown) + label {
+  top: 10px;
+  left: 10px;
+  transform: translateY(0) scale(0.8);
+  font-size: 0.8rem;
+}
+
+.input-container.error input {
+  border-color: var(--accent-color-2);
+}
+

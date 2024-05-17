@@ -24,10 +24,10 @@ const Navbar = () => {
           <Link to="/defis" className="navbar-link" onClick={toggleNav}>
             Défis
           </Link>
-          <Link to="/account" className="navbar-link" onClick={toggleNav}>
+          <Link to="/signin" className="navbar-link" onClick={toggleNav}>
             Se connecter
           </Link>
-          <Link to="/createaccount" className="navbar-link" onClick={toggleNav}>
+          <Link to="/signup" className="navbar-link" onClick={toggleNav}>
             S'inscrire
           </Link>
           <Link to="/about" className="navbar-link" onClick={toggleNav}>
