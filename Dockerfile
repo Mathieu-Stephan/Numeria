@@ -19,6 +19,6 @@ RUN npm install util url path-browserify crypto-browserify querystring-es3 strea
 
 RUN npm install
 
-EXPOSE 3000
+EXPOSE 3000 3001
 
 CMD  ["sh", "-c", "npm start & node server.js"]

@@ -29,6 +29,7 @@ services:
     container_name: web_app-container
     ports:
       - "3000:3000"
+      - "3001:3001"
     networks:
       - numeria-network
     environment:

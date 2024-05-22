@@ -5,7 +5,7 @@ const HomePage = () => {
     const [defiData, setDefiData] = useState([]);
 
     useEffect(() => {
-        fetch('localhost:3001/api/data')
+        fetch('http://localhost:3001/api/defis')
             .then(response => response.json())
             .then(data => setDefiData(data))
             .catch(error => console.error('Erreur lors de la récupération des données', error));
