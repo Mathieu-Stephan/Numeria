@@ -10,10 +10,7 @@ const Defis = () => {
         const defisData = [
             { id: 1, titre: "Défi 1", description: "Description du Défi 1", etoiles: 4 },
             { id: 2, titre: "Défi 2", description: "Description du Défi 2", etoiles: 3 },
-            { id: 3, titre: "Défi 3", description: "Description du Défi 3", etoiles: 5 },
-            { id: 4, titre: "Défi 4", description: "Description du Défi 4", etoiles: 2 },
-            { id: 5, titre: "Défi 5", description: "Description du Défi 5", etoiles: 4 },
-            { id: 6, titre: "Défi 6", description: "Description du Défi 6", etoiles: 3 }
+            { id: 3, titre: "Défi 3", description: "Description du Défi 3", etoiles: 5 }
         ];
 
         // Mise à jour de l'état avec les données de défis fictives

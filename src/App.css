@@ -485,3 +485,42 @@ Page défis
   border-color: var(--accent-color-2);
 }
 
+
+
+
+
+.myaccount-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+}
+
+.profile-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.profile-picture {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 2px solid var(--primary-color);
+  margin-bottom: 10px;
+}
+
+.user-name {
+  font-family: Montserrat, sans-serif;
+  font-size: 1.5rem;
+  color: var(--text-color);
+}
+
+.user-info {
+  font-family: open-sans, sans-serif;
+  font-size: 1.2rem;
+  color: var(--text-color);
+}

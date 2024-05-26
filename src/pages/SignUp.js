@@ -29,7 +29,7 @@ const SignUp = () => {
     }
 
     if (!formData.pseudonyme || formData.pseudonyme.length > 15) {
-        newErrors.pseudonyme = 'Le pseudonyme est requis et doit contenir au maximum 15 caractères';
+        newErrors.pseudonyme = "Le pseudonyme n'est pas valide";
     }
 
     if (!formData.email) {
