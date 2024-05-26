@@ -9,6 +9,7 @@ import SignUp from './pages/SignUp';
 import SignIn from './pages/SignIn';
 import MyAccount from './pages/MyAccount';
 import AdminPage from './pages/AdminPage';
+import Classement from './pages/Classement';
 import { useEffect, useState } from 'react';
 
 export default function App() {
@@ -39,6 +40,7 @@ export default function App() {
       <Route path="/signup" component={SignUp}></Route>
       <Route path="/signin" component={SignIn}></Route>
       <Route path="/account" component={MyAccount}></Route>
+      <Route path="/classement" component={Classement}></Route>
 
       <Route path="/admin" component={AdminPage} />
       <Route path="/404" component={NotFoundPage} />

@@ -524,3 +524,79 @@ Page défis
   font-size: 1.2rem;
   color: var(--text-color);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.button-container button {
+  margin: 0 10px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  background-color: var(--primary-color);
+  color: white;
+  cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.button-container button:hover {
+  background-color: var(--secondary-color);
+}
+
+.ranking-container ul {
+  list-style: none;
+  padding: 0;
+}
+
+.ranking-container li {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.ranking-container li:nth-child(odd) {
+  background-color: #f9f9f9;
+}
+
+
+
+
+
+
+.admin-button-container {
+  margin-top: 20px;
+  text-align: center; /* Centrer le bouton */
+}
+
+.admin-button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #7DCFB6;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.admin-button:hover {
+  background-color: #ff76ac;
+}
+
+.icon {
+  margin-right: 8px;
+}

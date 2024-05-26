@@ -1,6 +1,9 @@
 import React from 'react';
 import Navbar from './NavBar';
 import Footer from './Footer';
+import { Link } from 'react-router-dom'; // Assurez-vous d'importer Link
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCogs } from '@fortawesome/free-solid-svg-icons';
 
 const MyAccount = () => {
   const user = {
@@ -21,6 +24,12 @@ const MyAccount = () => {
         <div className="user-info">
           <p>Défis réussis : {user.challengesCompleted}</p>
           <p>Étoiles : {user.stars}</p>
+        </div>
+        <div className="admin-button-container">
+          <Link to="/admin" className="admin-button">
+            <FontAwesomeIcon icon={faCogs} className="icon" />
+            Gérer le site (Admin)
+          </Link>
         </div>
       </div>
       <Footer />
