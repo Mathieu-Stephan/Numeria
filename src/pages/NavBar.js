@@ -1,13 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom'; 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 
 const Navbar = () => {
   const [isNavOpen, setNavOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  useEffect(() => {
+    setIsLoggedIn(localStorage.getItem('pseudo')?true:false);
+  }, []);
 
   const toggleNav = () => {
     setNavOpen(!isNavOpen);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('pseudo');
+    localStorage.removeItem('email');
+    localStorage.removeItem('nom');
+    localStorage.removeItem('prenom');
+    localStorage.removeItem('admin');
+    setIsLoggedIn(false);
+    setNavOpen(false);
+    window.location.href = 'http://localhost:3000/';
   };
 
   return (
@@ -27,19 +42,30 @@ const Navbar = () => {
           <Link to="/classement" className="navbar-link" onClick={() => setNavOpen(false)}>
             Classement
           </Link>
-          <Link to="/signin" className="navbar-link" onClick={() => setNavOpen(false)}>
-            Se connecter
-          </Link>
-          <Link to="/signup" className="navbar-link" onClick={() => setNavOpen(false)}>
-            S'inscrire
-          </Link>
+          {!isLoggedIn && (
+            <>
+              <Link to="/signin" className="navbar-link" onClick={() => setNavOpen(false)}>
+                Se connecter
+              </Link>
+              <Link to="/signup" className="navbar-link" onClick={() => setNavOpen(false)}>
+                S'inscrire
+              </Link>
+            </>
+          )}
           <Link to="/about" className="navbar-link" onClick={() => setNavOpen(false)}>
             CGU
           </Link>
-          <Link to="/account" className="navbar-link" onClick={() => setNavOpen(false)}>
-            <FontAwesomeIcon icon={faUser} className="icon" />
-            Mon compte
-          </Link>
+          {isLoggedIn && (
+            <>
+              <Link to="/account" className="navbar-link" onClick={() => setNavOpen(false)}>
+                <FontAwesomeIcon icon={faUser} className="icon" />
+                Mon compte
+              </Link>
+              <Link to="/account" className="navbar-link" onClick={handleLogout}>
+                Déconnexion
+              </Link>
+            </>
+          )}
         </div>
 
         <div className="navbar-toggle" onClick={toggleNav}>

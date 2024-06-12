@@ -1,15 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from './NavBar';
 import Footer from './Footer';
+import axios from 'axios';
 
 const SignIn = () => {
+  const [users, setUsers] = useState([]);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
-
   const [errors, setErrors] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
+
+  useEffect(() => {
+    // Récupérer les utilisateurs lors du montage du composant
+    axios.get('http://localhost:3001/api/users')
+      .then(response => {
+        setUsers(response.data);
+      })
+      .catch(error => console.error('Error fetching users:', error));
+  }, []);
 
   const validateForm = () => {
     const newErrors = {};
@@ -40,9 +50,23 @@ const SignIn = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
-      // Soumettre les données
-      console.log('Form data:', formData);
-      setIsSubmitted(true);
+      let userConnected = null;
+      users.forEach((user) => {
+        if (user.email === formData.email && user.motDePasse === formData.password) {
+          userConnected = user;
+          localStorage.setItem("pseudo", user.pseudo);
+          localStorage.setItem("email", user.email);
+          localStorage.setItem("nom", user.nom);
+          localStorage.setItem("prenom", user.prenom);
+          localStorage.setItem("admin", user.estAdmin);
+        }
+      })
+      if (userConnected) {
+        setIsSubmitted(true);
+        window.location.href = "http://localhost:3000/";
+      } else {
+        setErrors({ form: "Email ou mot de passe incorrect" });
+      }
     }
   };
 
@@ -77,7 +101,8 @@ const SignIn = () => {
               <label>Mot de passe:</label>
               {errors.password && <p className="error">{errors.password}</p>}
             </div>
-            <button type="submit">Se connecter</button>
+            {errors.form && <p className="error">{errors.form}</p>}
+            <button type="submit" className="submit-button">Se connecter</button>
           </form>
         )}
       </div>

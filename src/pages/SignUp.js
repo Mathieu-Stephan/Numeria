@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import Navbar from './NavBar';
 import Footer from './Footer';
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
-    pseudonyme: '',
+    pseudo: '',
     email: '',
-    password: '',
+    motDePasse: '',
     nom: '',
     prenom: '',
     dateNaissance: '',
     dateInscription: new Date().toISOString().split('T')[0],
+    photo: 'https://via.placeholder.com/150',
+    estAdmin: 0
   });
 
   const [errors, setErrors] = useState({});
@@ -20,7 +23,7 @@ const SignUp = () => {
     const newErrors = {};
     const now = new Date();
     const birthDate = new Date(formData.dateNaissance);
-    const age = now.getFullYear() - birthDate.getFullYear();
+    let age = now.getFullYear() - birthDate.getFullYear();
     const monthDiff = now.getMonth() - birthDate.getMonth();
     const dayDiff = now.getDate() - birthDate.getDate();
 
@@ -28,8 +31,8 @@ const SignUp = () => {
       age--;
     }
 
-    if (!formData.pseudonyme || formData.pseudonyme.length > 15) {
-        newErrors.pseudonyme = "Le pseudonyme n'est pas valide";
+    if (!formData.pseudo || formData.pseudo.length > 15) {
+      newErrors.pseudo = "Le pseudonyme n'est pas valide";
     }
 
     if (!formData.email) {
@@ -38,8 +41,8 @@ const SignUp = () => {
       newErrors.email = "L'adresse e-mail n'est pas valide";
     }
 
-    if (!formData.password) {
-      newErrors.password = 'Le mot de passe est requis';
+    if (!formData.motDePasse) {
+      newErrors.motDePasse = 'Le mot de passe est requis';
     }
 
     if (!formData.nom) {
@@ -69,97 +72,99 @@ const SignUp = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      // Soumettre les données
-      console.log('Form data:', formData);
-      setIsSubmitted(true);
+      try {
+        const response = await axios.post('http://localhost:3001/api/users', formData);
+        console.log('Form data:', response.data);
+        setIsSubmitted(true);
+      } catch (error) {
+        console.error('Error submitting form:', error);
+        setErrors({ form: 'Une erreur est survenue lors de l\'inscription' });
+      }
     }
   };
 
   return (
     <div className="container">
       <Navbar />
-      <div className="content signup-container"> {/* Ajout de la classe signup-container */}
+      <div className="content signup-container">
         <h1>Inscription</h1>
-        {isSubmitted ? (
-          <p>Inscription réussie!</p>
-        ) : (
-          <form onSubmit={handleSubmit} className="signup-form"> {/* Ajout de la classe signup-form */}
-            <div className="input-container"> {/* Ajout de la classe input-container */}
+          <form onSubmit={handleSubmit} className="signup-form">
+            <div className="input-container">
               <input
                 type="text"
-                name="pseudonyme"
-                value={formData.pseudonyme}
+                name="pseudo"
+                value={formData.pseudo}
                 onChange={handleChange}
-                placeholder="Pseudonyme" // Ajout de l'attribut placeholder
+                placeholder="Pseudonyme"
               />
-              <label>Pseudonyme</label> {/* Ajout du libellé */}
-              {errors.pseudonyme && <p className="error">{errors.pseudonyme}</p>}
+              <label>Pseudonyme</label>
+              {errors.pseudo && <p className="error">{errors.pseudo}</p>}
             </div>
-            <div className="input-container"> {/* Ajout de la classe input-container */}
+            <div className="input-container">
               <input
                 type="email"
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                placeholder="Email" // Ajout de l'attribut placeholder
+                placeholder="Email"
               />
-              <label>Email</label> {/* Ajout du libellé */}
+              <label>Email</label>
               {errors.email && <p className="error">{errors.email}</p>}
             </div>
-            <div className="input-container"> {/* Ajout de la classe input-container */}
+            <div className="input-container">
               <input
                 type="password"
-                name="password"
-                value={formData.password}
+                name="motDePasse"
+                value={formData.motDePasse}
                 onChange={handleChange}
-                placeholder="Mot de passe" // Ajout de l'attribut placeholder
+                placeholder="Mot de passe"
               />
-              <label>Mot de passe</label> {/* Ajout du libellé */}
-              {errors.password && <p className="error">{errors.password}</p>}
+              <label>Mot de passe</label>
+              {errors.motDePasse && <p className="error">{errors.motDePasse}</p>}
             </div>
-            <div className="input-container"> {/* Ajout de la classe input-container */}
+            <div className="input-container">
               <input
                 type="text"
                 name="nom"
                 value={formData.nom}
                 onChange={handleChange}
-                placeholder="Nom" // Ajout de l'attribut placeholder
+                placeholder="Nom"
               />
-              <label>Nom</label> {/* Ajout du libellé */}
+              <label>Nom</label>
               {errors.nom && <p className="error">{errors.nom}</p>}
             </div>
-            <div className="input-container"> {/* Ajout de la classe input-container */}
+            <div className="input-container">
               <input
                 type="text"
                 name="prenom"
                 value={formData.prenom}
                 onChange={handleChange}
-                placeholder="Prénom" // Ajout de l'attribut placeholder
+                placeholder="Prénom"
               />
-              <label>Prénom</label> {/* Ajout du libellé */}
+              <label>Prénom</label>
               {errors.prenom && <p className="error">{errors.prenom}</p>}
             </div>
-            <div className="input-container"> {/* Ajout de la classe input-container */}
+            <div className="input-container">
               <input
                 type="date"
                 name="dateNaissance"
                 value={formData.dateNaissance}
                 onChange={handleChange}
-                placeholder="Date de naissance" // Ajout de l'attribut placeholder
+                placeholder="Date de naissance"
               />
-              <label>Date de naissance</label> {/* Ajout du libellé */}
+              <label>Date de naissance</label>
               {errors.dateNaissance && <p className="error">{errors.dateNaissance}</p>}
             </div>
-            <button type="submit" className="submit-button">S'inscrire</button> {/* Ajout de la classe submit-button */}
+            <button type="submit" className="submit-button">S'inscrire</button>
+            {errors.form && <p className="error">{errors.form}</p>}
           </form>
-        )}
       </div>
-      <Footer/>
-</div>
-);
+      <Footer />
+    </div>
+  );
 };
 
 export default SignUp;
