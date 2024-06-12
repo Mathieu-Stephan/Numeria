@@ -30,10 +30,10 @@ setTimeout(() => {
   connection.connect(function(err) {
     if (err) {
       console.log("Info de la connection : ", connection.config)
-      console.error('Erreur de connexion (Je pete mon crane 😢): ' + err.stack);
+      console.error('Erreur de connexion' + err.stack);
       return;
     }
-    console.log('Connecté à la base de données MySQL (yippie 😁)');
+    console.log('Connecté à la base de données MySQL');
 
     app.listen(port, () => {
       console.log(`Le serveur écoute sur le port ${port}`);
@@ -96,6 +96,18 @@ app.delete('/api/defis/:idDefi', (req, res) => {
 //Points d'entrée de l'API pour User
 app.get('/api/users', (req, res) => {
   connection.query('SELECT * FROM User', (error, results) => {
+    if (error) {
+      res.status(500).json({ error: 'Erreur lors de la récupération des utilisateurs depuis la base de données' });
+      return;
+    }
+    res.json(results);
+  });
+});
+
+app.get('/api/users/:email', (req, res) => {
+  const { email } = req.params;
+  console.log(email);
+  connection.query('SELECT * FROM User WHERE email = ?', [email], (error, results) => {
     if (error) {
       res.status(500).json({ error: 'Erreur lors de la récupération des utilisateurs depuis la base de données' });
       return;

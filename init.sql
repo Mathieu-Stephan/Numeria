@@ -51,9 +51,9 @@ CREATE TABLE DefiUser (
 -- Ins�rer les utilisateurs
 INSERT INTO User (pseudo, email, motDePasse, nom, prenom, dateInscription, dateNaissance, photo, estAdmin)
 VALUES 
-('nathan', 'nathan@email.com', 'mdp_nathan', 'Basol', 'Nathan', '2024-01-09', '2004-04-22', 'url_photo1', 1),
-('mathis', 'mathis@email.com', 'mdp_mathis', 'Gueguen', 'Mathis', '2024-01-09', '2004-05-15', 'photo_url2', 1),
-('mathieu', 'mathieu@email.com', 'msp_mathieu', 'Stephan', 'Mathieu', '2024-01-09', '2004-12-20', 'photo_url3', 0);
+('nathan', 'nathan@email.com', 'mdp_nathan', 'Basol', 'Nathan', '2024-01-09', '2004-04-22', 'https://via.placeholder.com/150', 1),
+('mathis', 'mathis@email.com', 'mdp_mathis', 'Gueguen', 'Mathis', '2024-01-09', '2004-05-15', 'https://via.placeholder.com/150', 1),
+('mathieu', 'mathieu@email.com', 'mdp_mathieu', 'Stephan', 'Mathieu', '2024-01-09', '2004-12-20', 'https://via.placeholder.com/150', 1);
 
 -- Ins�rer les statistiques
 INSERT INTO Stat (unUser, nbDefis, nbEtoiles, score, nufs)
