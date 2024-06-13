@@ -44,7 +44,7 @@ code {
 
 
 a {
-  color: var(--accent-color-1);
+  color: var(--primary-color);
 }
 
 #logo{
@@ -578,7 +578,7 @@ Page défis
 
 
 .admin-button-container {
-  margin-top: 20px;
+  margin: 20px;
   text-align: center; /* Centrer le bouton */
 }
 
@@ -599,4 +599,97 @@ Page défis
 
 .icon {
   margin-right: 8px;
+}
+
+.profile-edit-section {
+  background-color: #fff; /* Fond blanc */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Ombre légère */
+  margin-bottom: 20px; /* Marge en bas */
+  max-width: 500px; /* Largeur maximale */
+}
+
+.profile-edit-section h3 {
+  font-family: Montserrat, sans-serif;
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  color: var(--text-color);
+}
+
+.profile-edit-section form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile-edit-section input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  font-size: 1rem;
+}
+
+.profile-edit-section button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  background-color: var(--primary-color);
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.profile-edit-section button:hover {
+  background-color: var(--secondary-color);
+}
+
+
+
+.password-change-section {
+  background-color: #fff; /* Fond blanc */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Ombre légère */
+  max-width: 500px; /* Largeur maximale */
+}
+
+.password-change-section h3 {
+  font-family: Montserrat, sans-serif;
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  color: var(--text-color);
+}
+
+.password-change-section form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.password-change-section input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  font-size: 1rem;
+}
+
+.password-change-section button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  background-color: var(--primary-color);
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.password-change-section button:hover {
+  background-color: var(--secondary-color);
 }

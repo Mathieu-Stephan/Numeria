@@ -15,7 +15,7 @@ COPY server.js /app
 
 COPY init.sql /docker-entrypoint-initdb.d/
 
-RUN npm install util url path-browserify crypto-browserify querystring-es3 stream-http browserify-zlib stream-browserify buffer
+RUN npm install util url path-browserify crypto-browserify querystring-es3 stream-http browserify-zlib stream-browserify buffer bcrypt
 
 RUN npm install
 

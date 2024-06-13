@@ -1,6 +1,7 @@
 const express = require('express');
 const mysql = require('mysql');
 const cors = require('cors');
+const bcrypt = require('bcrypt');
 
 const app = express();
 const port = 3001;
@@ -11,7 +12,6 @@ var corsOptions = {
 
 }
 
-// Ajoutez ceci pour autoriser toutes les origines (à adapter en fonction de vos besoins de sécurité)
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -104,7 +104,68 @@ app.get('/api/users', (req, res) => {
   });
 });
 
-app.get('/api/users/:email', (req, res) => {
+// Route pour mettre à jour les informations de l'utilisateur
+app.put('/api/users', (req, res) => {
+  const { pseudo, nom, prenom, dateNaissance } = req.body;
+  const query = 'UPDATE User SET nom = ?, prenom = ?, dateNaissance = ? WHERE pseudo = ?';
+  connection.query(query, [nom, prenom, dateNaissance, pseudo], (error, results) => {
+    if (error) {
+      res.status(500).json({ error: 'Erreur lors de la mise à jour de l\'utilisateur dans la base de données' });
+      console.error('Erreur lors de la mise à jour de l\'utilisateur dans la base de données', error);
+      return;
+    }
+    res.status(200).json({ message: 'Utilisateur mis à jour avec succès' });
+  });
+});
+
+// Route pour changer le mot de passe de l'utilisateur
+app.post('/api/users/change-password', (req, res) => {
+  const { pseudo, oldPassword, newPassword } = req.body;
+  const checkPasswordQuery = 'SELECT motDePasse FROM User WHERE pseudo = ?';
+  connection.query(checkPasswordQuery, [pseudo], (error, results) => {
+    if (error) {
+      res.status(500).json({ error: 'Erreur lors de la récupération du mot de passe de l\'utilisateur' });
+      return;
+    }
+    if (results.length === 0) {
+      res.status(404).json({ error: 'Utilisateur non trouvé' });
+      return;
+    }
+    
+    const user = results[0];
+    bcrypt.compare(oldPassword, user.motDePasse, (err, isMatch) => {
+      if (err) {
+        res.status(500).json({ error: 'Erreur lors de la vérification du mot de passe' });
+        return;
+      }
+      if (oldPassword !== user.motDePasse) {
+        res.status(400).json({ error: 'Ancien mot de passe incorrect' });
+        return;
+      }
+      
+      // Hasher le nouveau mot de passe
+      //bcrypt.hash(newPassword, 10, (err, hash) => {
+        //if (err) {
+          //res.status(500).json({ error: 'Erreur lors du hachage du nouveau mot de passe' });
+          //return;
+        //}
+        
+        // Mettre à jour le mot de passe dans la base de données
+        const updateQuery = 'UPDATE User SET motDePasse = ? WHERE pseudo = ?';
+        connection.query(updateQuery, [newPassword, pseudo], (error, results) => {
+          if (error) {
+            res.status(500).json({ error: 'Erreur lors de la mise à jour du mot de passe dans la base de données' });
+            return;
+          }
+          res.status(200).json({ message: 'Mot de passe mis à jour avec succès' });
+        //});
+      });
+    });
+  });
+});
+
+
+app.get('/api/users/get-email/:email', (req, res) => {
   const { email } = req.params;
   console.log(email);
   connection.query('SELECT * FROM User WHERE email = ?', [email], (error, results) => {
@@ -115,7 +176,7 @@ app.get('/api/users/:email', (req, res) => {
     res.json(results);
   });
 });
-	
+
 app.post('/api/users', (req, res) => {
   const { pseudo, email, motDePasse, nom, prenom, dateInscription, dateNaissance, photo, estAdmin } = req.body;
   const query = 'INSERT INTO User (pseudo, email, motDePasse, nom, prenom, dateInscription, dateNaissance, photo, estAdmin) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
@@ -140,16 +201,28 @@ app.delete('/api/users/:pseudo', (req, res) => {
   });
 });
 
-app.get('/api/users/:pseudo', (req, res) => {
+app.get('/api/users/get-pseudo/:pseudo', (req, res) => {
   const { pseudo } = req.params;
-  connection.query('SELECT * FROM User WHERE pseudo = ?', [pseudo], (error, results) => {
+  const query = `
+    SELECT User.*, Stat.nbDefis, Stat.nbEtoiles 
+    FROM User 
+    LEFT JOIN Stat ON User.pseudo = Stat.unUser 
+    WHERE User.pseudo = ?
+  `;
+  connection.query(query, [pseudo], (error, results) => {
     if (error) {
-      res.status(500).json({ error: 'Erreur lors de la récupération de l\'utilisateur depuis la base de données' });
+      res.status(500).json({ error: 'Erreur lors de la récupération de l\'utilisateur et des statistiques depuis la base de données' });
+      console.error('Erreur lors de la récupération de l\'utilisateur et des statistiques depuis la base de données', error);
       return;
     }
-    res.json(results);
+    if (results.length === 0) {
+      res.status(404).json({ error: 'Utilisateur non trouvé' });
+      return;
+    }
+    res.json(results[0]);
   });
 });
+
 
 //Points d'entrée de l'API pour Stat
 app.get('/api/stats', (req, res) => {
@@ -186,14 +259,14 @@ app.delete('/api/stats/:unUser', (req, res) => {
   });
 });
 
-app.get('/api/stats/:unUser', (req, res) => {
+app.get('/api/stats/user/:unUser', (req, res) => {
   const { unUser } = req.params;
   connection.query('SELECT * FROM Stat WHERE unUser = ?', [unUser], (error, results) => {
     if (error) {
       res.status(500).json({ error: 'Erreur lors de la récupération des statistiques depuis la base de données' });
       return;
     }
-    res.json(results);
+    res.json(results[0]);
   });
 });
 
@@ -217,7 +290,19 @@ app.post('/api/defiUsers', (req, res) => {
       console.error('Erreur lors de l\'ajout de la relation utilisateur-défi à la base de données', error);
       return;
     }
-    res.status(201).json({ message: 'Relation utilisateur-défi ajoutée avec succès' });
+    // Update stats
+    connection.query(
+      'UPDATE Stat SET nbDefis = nbDefis + 1, nbEtoiles = nbEtoiles + ? WHERE unUser = ?',
+      [nbEtoilesObtenu, unUser],
+      (updateError) => {
+        if (updateError) {
+          res.status(500).json({ error: 'Erreur lors de la mise à jour des statistiques dans la base de données' });
+          console.error('Erreur lors de la mise à jour des statistiques dans la base de données', updateError);
+          return;
+        }
+        res.status(201).json({ message: 'Relation utilisateur-défi ajoutée avec succès et statistiques mises à jour' });
+      }
+    );
   });
 });
 
@@ -228,10 +313,21 @@ app.delete('/api/defiUsers/:unUser/:unDefi', (req, res) => {
       res.status(500).json({ error: 'Erreur lors de la suppression de la relation utilisateur-défi de la base de données' });
       return;
     }
-    res.status(200).json({ message: 'Relation utilisateur-défi supprimée avec succès' });
+    // Update stats
+    connection.query(
+      'UPDATE Stat SET nbDefis = nbDefis - 1, nbEtoiles = nbEtoiles - (SELECT nbEtoilesObtenu FROM DefiUser WHERE unUser = ? AND unDefi = ?) WHERE unUser = ?',
+      [unUser, unDefi, unUser],
+      (updateError) => {
+        if (updateError) {
+          res.status(500).json({ error: 'Erreur lors de la mise à jour des statistiques dans la base de données' });
+          console.error('Erreur lors de la mise à jour des statistiques dans la base de données', updateError);
+          return;
+        }
+        res.status(200).json({ message: 'Relation utilisateur-défi supprimée avec succès et statistiques mises à jour' });
+      }
+    );
   });
 });
-
 app.get('/api/defiUsers/:unUser', (req, res) => {
   const { unUser } = req.params;
   connection.query('SELECT * FROM DefiUser WHERE unUser = ?', [unUser], (error, results) => {

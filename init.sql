@@ -12,7 +12,7 @@ CREATE TABLE User (
     prenom VARCHAR(50) NOT NULL,
     dateInscription DATE NOT NULL,
     dateNaissance DATE NOT NULL,
-    photo VARCHAR(50),
+    photo VARCHAR(850) DEFAULT 'https://via.placeholder.com/150',
     estAdmin BOOLEAN NOT NULL,
     PRIMARY KEY (pseudo)
 );
@@ -47,6 +47,33 @@ CREATE TABLE DefiUser (
     FOREIGN KEY (unUser) REFERENCES User(pseudo),
     FOREIGN KEY (unDefi) REFERENCES Defi(idDefi)
 );
+
+-- Trigger to update the stats when a DefiUser is added
+DELIMITER $$
+CREATE TRIGGER after_defiuser_insert
+AFTER INSERT ON DefiUser
+FOR EACH ROW
+BEGIN
+  UPDATE Stat
+  SET nbDefis = nbDefis + 1,
+      nbEtoiles = nbEtoiles + NEW.nbEtoilesObtenu
+  WHERE unUser = NEW.unUser;
+END$$
+DELIMITER ;
+
+-- Trigger to update the stats when a DefiUser is deleted
+DELIMITER $$
+CREATE TRIGGER after_defiuser_delete
+AFTER DELETE ON DefiUser
+FOR EACH ROW
+BEGIN
+  UPDATE Stat
+  SET nbDefis = nbDefis - 1,
+      nbEtoiles = nbEtoiles - OLD.nbEtoilesObtenu
+  WHERE unUser = OLD.unUser;
+END$$
+DELIMITER ;
+
 
 -- Ins�rer les utilisateurs
 INSERT INTO User (pseudo, email, motDePasse, nom, prenom, dateInscription, dateNaissance, photo, estAdmin)
