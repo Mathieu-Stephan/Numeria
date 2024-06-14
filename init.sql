@@ -12,7 +12,7 @@ CREATE TABLE User (
     prenom VARCHAR(50) NOT NULL,
     dateInscription DATE NOT NULL,
     dateNaissance DATE NOT NULL,
-    photo VARCHAR(850) DEFAULT 'https://via.placeholder.com/150',
+    photo LONGTEXT,
     estAdmin BOOLEAN NOT NULL,
     PRIMARY KEY (pseudo)
 );

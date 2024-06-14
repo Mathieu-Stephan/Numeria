@@ -3,12 +3,13 @@ import { useHistory } from 'react-router-dom';
 import Navbar from './NavBar';
 import Footer from './Footer';
 import { Link } from 'react-router-dom';
+import Compressor from 'compressorjs';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCogs } from '@fortawesome/free-solid-svg-icons';
-import { faBan } from '@fortawesome/free-solid-svg-icons';
+import { faCogs, faBan } from '@fortawesome/free-solid-svg-icons';
 
 const MyAccount = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [user, setUser] = useState(null);
   const [editProfile, setEditProfile] = useState(false);
   const [editPassword, setEditPassword] = useState(false);
@@ -17,6 +18,7 @@ const MyAccount = () => {
     nom: '',
     prenom: '',
     dateNaissance: '',
+    photo: '',
   });
   const [passwordForm, setPasswordForm] = useState({
     pseudo: '',
@@ -30,7 +32,11 @@ const MyAccount = () => {
 
   useEffect(() => {
     const pseudo = localStorage.getItem('pseudo');
+    const admin = localStorage.getItem('admin');
     if (pseudo) {
+      if (admin == 1) {
+        setIsAdmin(true);
+      }
       setIsLoggedIn(true);
       // Fetch user data from API (replace with actual API call)
       fetch(`http://localhost:3001/api/users/get-pseudo/${pseudo}`)
@@ -44,7 +50,7 @@ const MyAccount = () => {
               nom: userData.nom,
               prenom: userData.prenom,
               dateNaissance: userData.dateNaissance,
-
+              photo: userData.photo || '',
             });
             setPasswordForm({
               pseudo: userData.pseudo,
@@ -68,6 +74,25 @@ const MyAccount = () => {
   const handlePasswordChange = (e) => {
     const { name, value } = e.target;
     setPasswordForm({ ...passwordForm, [name]: value });
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      new Compressor(file, {
+        quality: 0.6,
+        success(result) {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            setForm({ ...form, photo: reader.result });
+          };
+          reader.readAsDataURL(result);
+        },
+        error(err) {
+          console.error('Error compressing image:', err);
+        },
+      });
+    }
   };
 
   const handleProfileSubmit = (e) => {
@@ -109,20 +134,19 @@ const MyAccount = () => {
         if (data.error) {
           setErrors({ oldPassword: data.error });
           return;
-        }
-        else {
-          setErrors({oldPassword: 'Succès! Mot de passe changé avec succès!'});
+        } else {
+          setErrors({ oldPassword: 'Succès! Mot de passe changé avec succès!' });
         }
         setEditPassword(false);
         return;
       })
       .catch(error => console.error('Error changing password:', error));
   };
-  
-  const routeChange = () =>{ 
+
+  const routeChange = () => {
     let path = `/`;
     history.push(path);
-  }
+  };
 
   if (!isLoggedIn) {
     return (
@@ -131,7 +155,7 @@ const MyAccount = () => {
         <div className="content myaccount-container">
           <h2>Vous devez être connecté pour accéder à cette page</h2>
           <FontAwesomeIcon icon={faBan} className="icon" />
-          <div className='button-container'>
+          <div className="button-container">
             <button onClick={routeChange}>Se connecter</button>
           </div>
         </div>
@@ -145,19 +169,33 @@ const MyAccount = () => {
       <Navbar />
       <div className="content myaccount-container">
         <div className="profile-section">
-          <img src={user?.photo || ''} alt="Profil" className="profile-picture" />
+          <img
+            src={form.photo || ''}
+            alt="Profil"
+            className="profile-picture"
+            onClick={() => document.getElementById('fileInput').click()}
+          />
+          <input
+            type="file"
+            id="fileInput"
+            style={{ display: 'none' }}
+            onChange={handleImageChange}
+          />
           <h2 className="user-name">{user?.nom} {user?.prenom}</h2>
         </div>
         <div className="user-info">
           <p>Défis réussis : {user?.nbDefis || 0}</p>
           <p>Étoiles : {user?.nbEtoiles || 0}</p>
         </div>
-        <div className="admin-button-container">
-          <Link to="/admin" className="admin-button">
-            <FontAwesomeIcon icon={faCogs} className="icon" />
-            Gérer le site (Admin)
-          </Link>
-        </div>
+        {isAdmin ? (
+          <div className="admin-button-container">
+            <Link to="/admin" className="admin-button">
+              <FontAwesomeIcon icon={faCogs} className="icon" />
+              Gérer le site (Admin)
+            </Link>
+          </div>
+        ) : null}
+
         <br />
         <div className="profile-edit-section">
           <h3>Mettre à jour le profil</h3>
@@ -189,10 +227,8 @@ const MyAccount = () => {
               <button type="submit">Sauvegarder</button>
               <button type="button" onClick={() => setEditProfile(false)}>Annuler</button>
             </form>
-            
           ) : (
             <button onClick={() => setEditProfile(true)}>Modifier le profil</button>
-            
           )}
           {errors.nom && <p className="error">{errors.nom}</p>}
         </div>

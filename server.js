@@ -2,10 +2,14 @@ const express = require('express');
 const mysql = require('mysql');
 const cors = require('cors');
 const bcrypt = require('bcrypt');
+const bodyParser = require('body-parser');
+
 
 const app = express();
 const port = 3001;
 
+app.use(bodyParser.json({ limit: '10mb' }));
+app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 var corsOptions = {
   origin: 'http://localhost:3000',
   optionsSuccessStatus: 200
@@ -106,16 +110,20 @@ app.get('/api/users', (req, res) => {
 
 // Route pour mettre à jour les informations de l'utilisateur
 app.put('/api/users', (req, res) => {
-  const { pseudo, nom, prenom, dateNaissance } = req.body;
-  const query = 'UPDATE User SET nom = ?, prenom = ?, dateNaissance = ? WHERE pseudo = ?';
-  connection.query(query, [nom, prenom, dateNaissance, pseudo], (error, results) => {
-    if (error) {
-      res.status(500).json({ error: 'Erreur lors de la mise à jour de l\'utilisateur dans la base de données' });
-      console.error('Erreur lors de la mise à jour de l\'utilisateur dans la base de données', error);
-      return;
+  const { pseudo, nom, prenom, dateNaissance, photo } = req.body;
+
+  connection.query(
+    'UPDATE user SET nom = ?, prenom = ?, dateNaissance = ?, photo = ? WHERE pseudo = ?',
+    [nom, prenom, dateNaissance, photo, pseudo],
+    (error, results) => {
+      if (error) {
+        console.error('Error updating profile:', error);
+        res.status(500).json({ error: 'Failed to update profile' });
+      } else {
+        res.json({ pseudo, nom, prenom, dateNaissance, photo });
+      }
     }
-    res.status(200).json({ message: 'Utilisateur mis à jour avec succès' });
-  });
+  );
 });
 
 // Route pour changer le mot de passe de l'utilisateur
