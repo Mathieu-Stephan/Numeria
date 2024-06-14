@@ -4,7 +4,7 @@
 
 .defis-container {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2vh 10vw;
 }
 
@@ -14,6 +14,9 @@
   padding: 20px;
   background-color: #f9f9f9;
   text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-decoration: none; /* Remove underline */
+  color: inherit; /* Ensure text color is inherited */
 }
 
 .defi-card h2 {
@@ -28,12 +31,13 @@
   color: gold;
 }
 
-.defi-square {
-  width: calc(33.33% - 20px);
+.defi-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 @media (max-width: 768px) {
-  .defi-square {
-      width: calc(100% - 20px);
+  .defis-container {
+    grid-template-columns: 1fr;
   }
 }
