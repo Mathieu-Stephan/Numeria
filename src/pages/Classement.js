@@ -1,47 +1,46 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from './NavBar';
 import Footer from './Footer';
+import './Classement.css';
 
 const Classement = () => {
-  const [currentChallenge, setCurrentChallenge] = useState('defi1');
-  const [rankings, setRankings] = useState({
-    defi1: [],
-    defi2: [],
-    defi3: [],
-  });
+  const [currentChallenge, setCurrentChallenge] = useState('General');
+  const [ranking, setRanking] = useState([]);
+  const [defis, setDefis] = useState([]);
 
   useEffect(() => {
-    // Remplacer par les appels API réels pour obtenir les classements des défis
-    const fetchRankings = async () => {
-      try {
-        const response1 = await fetch('http://localhost:3001/api/classement/defi1');
-        const defi1Rankings = await response1.json();
-        
-        const response2 = await fetch('http://localhost:3001/api/classement/defi2');
-        const defi2Rankings = await response2.json();
-        
-        const response3 = await fetch('http://localhost:3001/api/classement/defi3');
-        const defi3Rankings = await response3.json();
+    // Récupérer les défis
+    fetch('http://localhost:3001/api/defis')
+      .then(response => response.json())
+      .then(data => setDefis(data))
+      .catch(error => console.error('Erreur lors de la récupération des données des défis', error));
+  }, []);
 
-        setRankings({
-          defi1: defi1Rankings,
-          defi2: defi2Rankings,
-          defi3: defi3Rankings,
-        });
+  useEffect(() => {
+    // Récupérer le classement en fonction du défi sélectionné
+    const fetchRanking = async () => {
+      try {
+        const response = await fetch(`http://localhost:3001/api/classement/${currentChallenge}`);
+        const data = await response.json();
+        setRanking(data);
       } catch (error) {
-        console.error('Erreur lors de la récupération des classements:', error);
+        console.error('Erreur lors de la récupération des données du ranking', error);
       }
     };
 
-    fetchRankings();
-  }, []);
+    fetchRanking();
+  }, [currentChallenge]);
 
-  const renderRanking = (defi) => {
+  const handleSelectChange = (e) => {
+    setCurrentChallenge(e.target.value);
+  };
+
+  const renderRanking = () => {
     return (
       <ul>
-        {rankings[defi].map((user, index) => (
+        {ranking.map((user, index) => (
           <li key={index}>
-            {index + 1}. {user.name} - {user.score} points
+            {index + 1}. {user.unUser} - {user.nbNufs} nufs - {user.temps}
           </li>
         ))}
       </ul>
@@ -53,13 +52,18 @@ const Classement = () => {
       <Navbar />
       <div className="content">
         <h1>Classement</h1>
-        <div className="button-container">
-          <button onClick={() => setCurrentChallenge('defi1')}>Défi 1</button>
-          <button onClick={() => setCurrentChallenge('defi2')}>Défi 2</button>
-          <button onClick={() => setCurrentChallenge('defi3')}>Défi 3</button>
+        <div className="select-container">
+          <select onChange={handleSelectChange} value={currentChallenge}>
+            <option value="General">Général</option>
+            {defis.map((defi, index) => (
+              <option key={index} value={defi.titre}>
+                {defi.titre}
+              </option>
+            ))}
+          </select>
         </div>
         <div className="ranking-container">
-          {renderRanking(currentChallenge)}
+          {renderRanking()}
         </div>
       </div>
       <Footer />

@@ -1,0 +1,23 @@
+.select-container {
+    margin: 20px 0;
+    text-align: center;
+  }
+  
+  .select-container select {
+    padding: 10px;
+    font-size: 16px;
+  }
+  
+  .ranking-container ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .ranking-container li {
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  

@@ -40,9 +40,9 @@ CREATE TABLE Defi (
 CREATE TABLE DefiUser (
     unUser VARCHAR(15) NOT NULL,
     unDefi INT NOT NULL,
-    dateDebut DATE NOT NULL,
-    dateFin DATE,
-    nbEtoilesObtenu INT NOT NULL,
+    dateDebut TIMESTAMP NOT NULL,
+    dateFin TIMESTAMP,
+    nbNufs INT NOT NULL,
     PRIMARY KEY (unUser, unDefi),
     FOREIGN KEY (unUser) REFERENCES User(pseudo),
     FOREIGN KEY (unDefi) REFERENCES Defi(idDefi)
@@ -77,7 +77,7 @@ FOR EACH ROW
 BEGIN
   UPDATE Stat
   SET nbDefis = nbDefis + 1,
-      nbEtoiles = nbEtoiles + NEW.nbEtoilesObtenu
+      nbEtoiles = nbEtoiles + NEW.nbNufs
   WHERE unUser = NEW.unUser;
 END$$
 DELIMITER ;
@@ -90,7 +90,7 @@ FOR EACH ROW
 BEGIN
   UPDATE Stat
   SET nbDefis = nbDefis - 1,
-      nbEtoiles = nbEtoiles - OLD.nbEtoilesObtenu
+      nbEtoiles = nbEtoiles - OLD.nbNufs
   WHERE unUser = OLD.unUser;
 END$$
 DELIMITER ;
@@ -111,8 +111,8 @@ VALUES
 (3, 'Defi 3', 'Description du defi 3', 1, 'Categorie 1', 'Indice 3');
 
 -- Ins�rer les relations entre utilisateurs et d�fis
-INSERT INTO DefiUser (unUser, unDefi, dateDebut, dateFin, nbEtoilesObtenu)
+INSERT INTO DefiUser (unUser, unDefi, dateDebut, dateFin, nbNufs)
 VALUES 
-('nathan', 1, '2024-01-09', '2024-01-15', 3),
-('mathis', 2, '2024-01-10', '2024-01-16', 2),
-('mathieu', 3, '2024-01-11', '2024-01-17', 1);
+('nathan', 1, TIMESTAMP('2024-01-09', '13:01:02'), TIMESTAMP('2024-01-15', '14:41:23'), 3),
+('mathis', 2, TIMESTAMP('2024-01-10', '09:36:56'), TIMESTAMP('2024-01-16', '17:06:33'), 2),
+('mathieu', 3, TIMESTAMP('2024-01-11', '18:18:18'), TIMESTAMP('2024-01-17', '22:14:55'), 1);
