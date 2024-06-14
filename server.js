@@ -59,35 +59,50 @@ app.get('/api/defis', (req, res) => {
 });
 
 app.get('/api/classement/:id', (req, res) => {
-  const {id} = req.params;
-  if(id == "General") {
-    connection.query('SELECT Stat.unUser, Stat.nufs, SUM(DU.dateFin-DU.dateDebut) AS temps FROM Stat INNER JOIN DefiUser DU ON DU.unUser = Stat.unUser GROUP BY Stat.unUser ORDER BY nufs DESC, temps ASC;', (error, results, fields) => {
-      if (error) {
-        res.status(500).json({ error: 'Erreur lors de la récupération des données depuis la base de données' });
-        console.error('Erreur lors de la récupération des données depuis la base de données', error);
-        return;
-      }
-      if (results.length <= 0) {
-        res.status(404).json({ error: 'Ranking non trouvé' });
-        return;
-      }
-      res.json(results);
-    });
-  } else {
-    connection.query('SELECT DU.unUser, DU.nbNufs, SUM(DU.dateFin-DU.dateDebut) AS temps FROM Defiuser AS DU INNER JOIN Defi AS D ON D.idDefi = DU.unDefi WHERE D.titre = ? GROUP BY DU.unUser, DU.nbNufs ORDER BY DU.nbNufs DESC, temps ASC;', [id], (error, results, fields) => {
-      if (error) {
-        res.status(500).json({ error: 'Erreur lors de la récupération des données depuis la base de données' });
-        console.error('Erreur lors de la récupération des données depuis la base de données', error);
-        return;
-      }
-      if (results.length <= 0) {
-        res.status(404).json({ error: 'Ranking non trouvé' });
-        return;
-      }
-      res.json(results);
-    });
-  }
-  
+    const {id} = req.params;
+    if(id == "General") {
+      connection.query('SELECT Stat.unUser, Stat.nufs, SUM(DU.dateFin-DU.dateDebut) AS temps FROM Stat INNER JOIN DefiUser DU ON DU.unUser = Stat.unUser GROUP BY Stat.unUser ORDER BY nufs DESC, temps ASC;', (error, results, fields) => {
+        if (error) {
+          res.status(500).json({ error: 'Erreur lors de la récupération des données depuis la base de données' });
+          console.error('Erreur lors de la récupération des données depuis la base de données', error);
+          return;
+        }
+        if (results.length <= 0) {
+          res.status(404).json({ error: 'Ranking non trouvé' });
+          return;
+        }
+        res.json(results);
+      });
+    } else {
+      connection.query('SELECT DU.unUser, DU.nbNufs, SUM(DU.dateFin-DU.dateDebut) AS temps FROM Defiuser AS DU INNER JOIN Defi AS D ON D.idDefi = DU.unDefi WHERE D.titre = ? GROUP BY DU.unUser, DU.nbNufs ORDER BY DU.nbNufs DESC, temps ASC;', [id], (error, results, fields) => {
+        if (error) {
+          res.status(500).json({ error: 'Erreur lors de la récupération des données depuis la base de données' });
+          console.error('Erreur lors de la récupération des données depuis la base de données', error);
+          return;
+        }
+        if (results.length <= 0) {
+          res.status(404).json({ error: 'Ranking non trouvé' });
+          return;
+        }
+        res.json(results);
+      });
+    }
+    
+  });
+
+app.get('/api/defis/:id', (req, res) => {
+  connection.query('SELECT * FROM defi WHERE idDefi = ?', [req.params.id], (error, results, fields) => {
+    if (error) {
+      res.status(500).json({ error: 'Erreur lors de la récupération des données depuis la base de données' });
+      console.error('Erreur lors de la récupération des données depuis la base de données', error);
+      return;
+    }
+    if (results.length <= 0) {
+      res.status(404).json({ error: 'Défi non trouvé' });
+      return;
+    }
+    res.json(results[0]);
+  });
 });
 
 app.post('/api/defis', (req, res) => {
@@ -398,7 +413,3 @@ app.get('/api/defiUsers/:unUser/:unDefi', (req, res) => {
     res.json(results[0]);
   });
 });
-
-
-
-
