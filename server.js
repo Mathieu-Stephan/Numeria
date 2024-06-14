@@ -55,7 +55,7 @@ app.get('/api/defis', (req, res) => {
 });
 
 app.get('/api/defis/:id', (req, res) => {
-  connection.query('SELECT * FROM defi WHERE id = ?', [req.params.id], (error, results, fields) => {
+  connection.query('SELECT * FROM defi WHERE idDefi = ?', [req.params.id], (error, results, fields) => {
     if (error) {
       res.status(500).json({ error: 'Erreur lors de la récupération des données depuis la base de données' });
       console.error('Erreur lors de la récupération des données depuis la base de données', error);
@@ -235,6 +235,16 @@ app.get('/api/stats', (req, res) => {
   });
 });
 
+app.get('/api/stats/totalStars', (req, res) => {
+  connection.query('SELECT SUM(nbEtoiles) as etoiles FROM Stat', (error, results) => {
+    if (error) {
+      res.status(500).json({ error: 'Erreur lors de la récupération des statistiques depuis la base de données' });
+      return;
+    }
+    res.json(results);
+  });
+});
+
 app.post('/api/stats', (req, res) => {
   const { unUser, nbDefis, nbEtoiles, score, nufs } = req.body;
   const query = 'INSERT INTO Stat (unUser, nbDefis, nbEtoiles, score, nufs) VALUES (?, ?, ?, ?, ?)';
@@ -273,6 +283,16 @@ app.get('/api/stats/user/:unUser', (req, res) => {
 // Points d'entrée de l'API pour DefiUser
 app.get('/api/defiUsers', (req, res) => {
   connection.query('SELECT * FROM DefiUser', (error, results) => {
+    if (error) {
+      res.status(500).json({ error: 'Erreur lors de la récupération des relations utilisateur-défi depuis la base de données' });
+      return;
+    }
+    res.json(results);
+  });
+});
+
+app.get('/api/defiUsers/count', (req, res) => {
+  connection.query('SELECT COUNT(*) as defis FROM DefiUser WHERE dateFin IS NOT NULL', (error, results) => {
     if (error) {
       res.status(500).json({ error: 'Erreur lors de la récupération des relations utilisateur-défi depuis la base de données' });
       return;
