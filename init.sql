@@ -41,12 +41,33 @@ CREATE TABLE DefiUser (
     unUser VARCHAR(15) NOT NULL,
     unDefi INT NOT NULL,
     dateDebut DATE NOT NULL,
-    dateFin DATE NOT NULL,
+    dateFin DATE,
     nbEtoilesObtenu INT NOT NULL,
     PRIMARY KEY (unUser, unDefi),
     FOREIGN KEY (unUser) REFERENCES User(pseudo),
     FOREIGN KEY (unDefi) REFERENCES Defi(idDefi)
 );
+
+-- Trigger to add Stat for the User who has been created
+DELIMITER $$
+CREATE TRIGGER after_user_insert
+AFTER INSERT ON User
+FOR EACH ROW
+BEGIN
+  INSERT INTO Stat (unUser, nbDefis, nbEtoiles, score, nufs)
+  VALUES(NEW.pseudo, 0, 0, 0, 0);
+END$$
+DELIMITER ;
+
+-- Trigger to delete Stat for the User who has been deleted
+DELIMITER $$
+CREATE TRIGGER after_user_deleted
+AFTER DELETE ON User
+FOR EACH ROW
+BEGIN
+  DELETE FROM Stat WHERE unUser = OLD.pseudo;
+END$$
+DELIMITER ;
 
 -- Trigger to update the stats when a DefiUser is added
 DELIMITER $$
@@ -82,23 +103,16 @@ VALUES
 ('mathis', 'mathis@email.com', 'mdp_mathis', 'Gueguen', 'Mathis', '2024-01-09', '2004-05-15', 'https://via.placeholder.com/150', 1),
 ('mathieu', 'mathieu@email.com', 'mdp_mathieu', 'Stephan', 'Mathieu', '2024-01-09', '2004-12-20', 'https://via.placeholder.com/150', 1);
 
--- Ins�rer les statistiques
-INSERT INTO Stat (unUser, nbDefis, nbEtoiles, score, nufs)
-VALUES 
-('nathan', 0, 0, 0, 0),
-('mathis', 0, 0, 0, 0),
-('mathieu', 0, 0, 0, 0);
-
 -- Ins�rer les d�fis
 INSERT INTO Defi (idDefi, titre, description, nbEtoiles, categorie, indice)
 VALUES 
-(1, 'D�fi 1', 'Description du d�fi 1', 3, 'Cat�gorie 1', 'Indice 1'),
-(2, 'D�fi 2', 'Description du d�fi 2', 2, 'Cat�gorie 2', 'Indice 2'),
-(3, 'D�fi 3', 'Description du d�fi 3', 1, 'Cat�gorie 1', 'Indice 3');
+(1, 'Defi 1', 'Description du defi 1', 3, 'Categorie 1', 'Indice 1'),
+(2, 'Defi 2', 'Description du defi 2', 2, 'Categorie 2', 'Indice 2'),
+(3, 'Defi 3', 'Description du defi 3', 1, 'Categorie 1', 'Indice 3');
 
 -- Ins�rer les relations entre utilisateurs et d�fis
 INSERT INTO DefiUser (unUser, unDefi, dateDebut, dateFin, nbEtoilesObtenu)
 VALUES 
-('nathan', 1, '2024-01-09', '2024-01-15', 2),
-('mathis', 2, '2024-01-10', '2024-01-16', 1),
+('nathan', 1, '2024-01-09', '2024-01-15', 3),
+('mathis', 2, '2024-01-10', '2024-01-16', 2),
 ('mathieu', 3, '2024-01-11', '2024-01-17', 1);
