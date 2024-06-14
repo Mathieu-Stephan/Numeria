@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import Navbar from './NavBar';
 import Footer from './Footer';
 import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBan } from '@fortawesome/free-solid-svg-icons';
 
 const SignIn = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [users, setUsers] = useState([]);
   const [formData, setFormData] = useState({
     email: '',
@@ -19,6 +23,12 @@ const SignIn = () => {
         setUsers(response.data);
       })
       .catch(error => console.error('Error fetching users:', error));
+      const pseudo = localStorage.getItem('pseudo');
+      if (pseudo) {
+        setIsLoggedIn(true);
+      } else {
+        setIsLoggedIn(false);
+      }
   }, []);
 
   const validateForm = () => {
@@ -69,6 +79,28 @@ const SignIn = () => {
       }
     }
   };
+
+  const history = useHistory();
+  const routeChange = () =>{ 
+    let path = `/`;
+    history.push(path);
+  }
+
+  if (isLoggedIn) {
+    return (
+      <div className="container">
+        <Navbar />
+        <div className="content myaccount-container">
+          <h2>Vous devez être déconnecté pour accéder à cette page</h2>
+          <FontAwesomeIcon icon={faBan} className="icon" />
+          <div className='button-container'>
+            <button onClick={routeChange}>Retour</button>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="container">

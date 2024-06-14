@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import Navbar from './NavBar';
 import Footer from './Footer';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBan } from '@fortawesome/free-solid-svg-icons';
 
 const SignUp = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [formData, setFormData] = useState({
     pseudo: '',
     email: '',
@@ -18,6 +22,15 @@ const SignUp = () => {
 
   const [errors, setErrors] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
+
+  useEffect(() => {
+      const pseudo = localStorage.getItem('pseudo');
+      if (pseudo) {
+        setIsLoggedIn(true);
+      } else {
+        setIsLoggedIn(false);
+      }
+  }, []);
 
   const validateForm = () => {
     const newErrors = {};
@@ -79,12 +92,35 @@ const SignUp = () => {
         const response = await axios.post('http://localhost:3001/api/users', formData);
         console.log('Form data:', response.data);
         setIsSubmitted(true);
+        window.location.href = "http://localhost:3000/signin";
       } catch (error) {
         console.error('Error submitting form:', error);
         setErrors({ form: 'Une erreur est survenue lors de l\'inscription' });
       }
     }
   };
+
+  const history = useHistory();
+  const routeChange = () =>{ 
+    let path = `/`;
+    history.push(path);
+  }
+
+  if (isLoggedIn) {
+    return (
+      <div className="container">
+        <Navbar />
+        <div className="content myaccount-container">
+          <h2>Vous devez être déconnecté pour accéder à cette page</h2>
+          <FontAwesomeIcon icon={faBan} className="icon" />
+          <div className='button-container'>
+            <button onClick={routeChange}>Retour</button>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="container">

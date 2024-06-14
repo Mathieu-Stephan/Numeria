@@ -118,6 +118,11 @@ const MyAccount = () => {
       })
       .catch(error => console.error('Error changing password:', error));
   };
+  
+  const routeChange = () =>{ 
+    let path = `/`;
+    history.push(path);
+  }
 
   if (!isLoggedIn) {
     return (
@@ -126,7 +131,9 @@ const MyAccount = () => {
         <div className="content myaccount-container">
           <h2>Vous devez être connecté pour accéder à cette page</h2>
           <FontAwesomeIcon icon={faBan} className="icon" />
-          <Link to="/signin">Se connecter</Link>
+          <div className='button-container'>
+            <button onClick={routeChange}>Se connecter</button>
+          </div>
         </div>
         <Footer />
       </div>
