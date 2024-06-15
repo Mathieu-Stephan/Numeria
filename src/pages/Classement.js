@@ -40,7 +40,7 @@ const Classement = () => {
       <ul>
         {ranking.map((user, index) => (
           <li key={index}>
-            {index + 1}. {user.unUser} - {user.nbNufs} nufs - {user.temps}
+            {index + 1}. {user.unUser} - {user.nbEtoiles} étoiles - {user.nufs} nufs - {user.temps} minutes
           </li>
         ))}
       </ul>

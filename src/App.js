@@ -5,7 +5,7 @@ import HomePage from './pages/HomePage';
 import About from './pages/About';
 import NotFoundPage from './pages/NotFoundPage';
 import Defis from './pages/Defis';
-import DefiPage from './pages/DefiPage'; // Importer DefiPage
+import DefiPage from './pages/DefiPage';
 import SignUp from './pages/SignUp';
 import SignIn from './pages/SignIn';
 import MyAccount from './pages/MyAccount';
@@ -18,7 +18,7 @@ export default function App() {
       <Route exact path="/" component={HomePage}></Route>
       <Route path="/about" component={About}></Route>
       <Route exact path="/defis" component={Defis}></Route>
-      <Route path="/defis/:id" component={DefiPage}></Route> {/* Ajoutez cette ligne */}
+      <Route path="/defis/:id" component={DefiPage}></Route>
       <Route path="/signup" component={SignUp}></Route>
       <Route path="/signin" component={SignIn}></Route>
       <Route path="/account" component={MyAccount}></Route>

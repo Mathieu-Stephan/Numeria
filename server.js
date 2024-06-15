@@ -61,7 +61,7 @@ app.get('/api/defis', (req, res) => {
 app.get('/api/classement/:id', (req, res) => {
     const {id} = req.params;
     if(id == "General") {
-      connection.query('SELECT Stat.unUser, Stat.nufs, SUM(DU.dateFin-DU.dateDebut) AS temps FROM Stat INNER JOIN DefiUser DU ON DU.unUser = Stat.unUser GROUP BY Stat.unUser ORDER BY nufs DESC, temps ASC;', (error, results, fields) => {
+      connection.query('SELECT Stat.unUser, Stat.nbEtoiles, Stat.nufs, SUM(TIMESTAMPDIFF(MINUTE, DU.dateDebut, DU.dateFin)) AS temps FROM Stat INNER JOIN DefiUser DU ON DU.unUser = Stat.unUser GROUP BY Stat.unUser ORDER BY Stat.nbEtoiles, Stat.nufs DESC, temps ASC;', (error, results, fields) => {
         if (error) {
           res.status(500).json({ error: 'Erreur lors de la récupération des données depuis la base de données' });
           console.error('Erreur lors de la récupération des données depuis la base de données', error);
@@ -74,7 +74,7 @@ app.get('/api/classement/:id', (req, res) => {
         res.json(results);
       });
     } else {
-      connection.query('SELECT DU.unUser, DU.nbNufs, SUM(DU.dateFin-DU.dateDebut) AS temps FROM Defiuser AS DU INNER JOIN Defi AS D ON D.idDefi = DU.unDefi WHERE D.titre = ? GROUP BY DU.unUser, DU.nbNufs ORDER BY DU.nbNufs DESC, temps ASC;', [id], (error, results, fields) => {
+      connection.query('SELECT DU.unUser, DU.nbEtoiles, calcul_nufs(DU.nbEtoiles, DU.dateDebut, DU.dateFin) AS nufs, TIMESTAMPDIFF(MINUTE, DU.dateDebut, DU.dateFin) AS temps FROM Defiuser AS DU INNER JOIN Defi AS D ON D.idDefi = DU.unDefi WHERE D.titre = ? GROUP BY DU.unUser, DU.nbEtoiles, nufs, DU.dateDebut, DU.dateFin ORDER BY DU.nbEtoiles, nufs DESC, temps ASC;', [id], (error, results, fields) => {
         if (error) {
           res.status(500).json({ error: 'Erreur lors de la récupération des données depuis la base de données' });
           console.error('Erreur lors de la récupération des données depuis la base de données', error);

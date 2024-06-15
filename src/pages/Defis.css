@@ -4,19 +4,24 @@
 
 .defis-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2vh 10vw;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2vh 2vw;
+  justify-content: center;
+  margin: 0 auto;
+  max-width: 800px;
+  padding: 20px;
 }
 
 .defi-card {
+  width: 300px;
   border: 1px solid #ccc;
   border-radius: 8px;
   padding: 20px;
   background-color: #f9f9f9;
   text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  text-decoration: none; /* Remove underline */
-  color: inherit; /* Ensure text color is inherited */
+  text-decoration: none;
+  color: inherit;
 }
 
 .defi-card h2 {
@@ -31,9 +36,19 @@
   color: gold;
 }
 
-.defi-card:hover {
+.defi-square {
+  text-decoration: none;
+  color: inherit;
+}
+
+.defi-square:hover .defi-card {
   transform: translateY(-5px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.defi-square .defi-card h2,
+.defi-square .defi-card p {
+  text-decoration: none;
 }
 
 @media (max-width: 768px) {

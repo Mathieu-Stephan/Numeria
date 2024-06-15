@@ -29,7 +29,7 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="navbar-container">
         <Link to="/" className="navbar-logo" onClick={() => setNavOpen(false)}>
-          <img src="Logo_A.png" alt="CypherCode Logo"/>
+          <img src="/Logo_A.png" alt="Numeria Logo"/>
         </Link>
 
         <div className={`navbar-links ${isNavOpen ? 'open' : ''}`}>

@@ -21,7 +21,6 @@ CREATE TABLE Stat (
     unUser VARCHAR(15) NOT NULL,
     nbDefis INT NOT NULL,
     nbEtoiles INT NOT NULL,
-    score INT NOT NULL,
     nufs INT NOT NULL,
     PRIMARY KEY (unUser),
     FOREIGN KEY (unUser) REFERENCES User(pseudo)
@@ -42,7 +41,7 @@ CREATE TABLE DefiUser (
     unDefi INT NOT NULL,
     dateDebut TIMESTAMP NOT NULL,
     dateFin TIMESTAMP,
-    nbNufs INT NOT NULL,
+    nbEtoiles INT NOT NULL,
     PRIMARY KEY (unUser, unDefi),
     FOREIGN KEY (unUser) REFERENCES User(pseudo),
     FOREIGN KEY (unDefi) REFERENCES Defi(idDefi)
@@ -54,44 +53,89 @@ CREATE TRIGGER after_user_insert
 AFTER INSERT ON User
 FOR EACH ROW
 BEGIN
-  INSERT INTO Stat (unUser, nbDefis, nbEtoiles, score, nufs)
-  VALUES(NEW.pseudo, 0, 0, 0, 0);
+  INSERT INTO Stat (unUser, nbDefis, nbEtoiles, nufs)
+  VALUES(NEW.pseudo, 0, 0, 0);
 END$$
 DELIMITER ;
 
 -- Trigger to delete Stat for the User who has been deleted
 DELIMITER $$
-CREATE TRIGGER after_user_deleted
-AFTER DELETE ON User
+CREATE TRIGGER before_user_deleted
+BEFORE DELETE ON User
 FOR EACH ROW
 BEGIN
+  DELETE FROM DefiUser WHERE unUser = OLD.pseudo;
   DELETE FROM Stat WHERE unUser = OLD.pseudo;
 END$$
 DELIMITER ;
 
--- Trigger to update the stats when a DefiUser is added
+-- Trigger to delete DefiUser for the Defi which has been deleted
+DELIMITER $$
+CREATE TRIGGER before_defi_deleted
+BEFORE DELETE ON Defi
+FOR EACH ROW
+BEGIN
+  DELETE FROM DefiUser WHERE unDefi = OLD.idDefi;
+END$$
+DELIMITER ;
+
+-- Trigger to update the stats when a DefiUser is added with dateFin not null
 DELIMITER $$
 CREATE TRIGGER after_defiuser_insert
 AFTER INSERT ON DefiUser
 FOR EACH ROW
 BEGIN
-  UPDATE Stat
-  SET nbDefis = nbDefis + 1,
-      nbEtoiles = nbEtoiles + NEW.nbNufs
-  WHERE unUser = NEW.unUser;
+    IF NEW.dateFin IS NOT NULL THEN
+        UPDATE Stat
+        SET nbDefis = nbDefis + 1,
+            nbEtoiles = nbEtoiles + NEW.nbEtoiles,
+            nufs = nufs + calcul_nufs(NEW.nbEtoiles, NEW.dateDebut, NEW.dateFin)
+        WHERE unUser = NEW.unUser;
+    END IF;
 END$$
 DELIMITER ;
 
--- Trigger to update the stats when a DefiUser is deleted
+-- Trigger to update the stats when a DefiUser is update with dateFin not null
+DELIMITER $$
+CREATE TRIGGER after_defiuser_update
+AFTER UPDATE ON DefiUser
+FOR EACH ROW
+BEGIN
+    IF NEW.dateFin IS NOT NULL THEN
+        UPDATE Stat
+        SET nbDefis = nbDefis + 1,
+            nbEtoiles = nbEtoiles + NEW.nbEtoiles,
+            nufs = nufs + calcul_nufs(NEW.nbEtoiles, NEW.dateDebut, NEW.dateFin)
+        WHERE unUser = NEW.unUser;
+    END IF;
+END$$
+DELIMITER ;
+
+-- Trigger to update the stats when a DefiUser is delete with dateFin not null
 DELIMITER $$
 CREATE TRIGGER after_defiuser_delete
 AFTER DELETE ON DefiUser
 FOR EACH ROW
 BEGIN
-  UPDATE Stat
-  SET nbDefis = nbDefis - 1,
-      nbEtoiles = nbEtoiles - OLD.nbNufs
-  WHERE unUser = OLD.unUser;
+  IF OLD.dateFin IS NOT NULL THEN
+        UPDATE Stat
+        SET nbDefis = nbDefis - 1,
+            nbEtoiles = nbEtoiles - OLD.nbEtoiles,
+            nufs = nufs - calcul_nufs(OLD.nbEtoiles, OLD.dateDebut, OLD.dateFin)
+        WHERE unUser = OLD.unUser;
+    END IF;
+END$$
+DELIMITER ;
+
+-- Function to calculate nufs
+DELIMITER $$
+CREATE FUNCTION calcul_nufs(nbEtoiles INT, dateDebut TIMESTAMP, dateFin TIMESTAMP)
+RETURNS INT
+DETERMINISTIC
+BEGIN
+    DECLARE nufs INT;   
+    SET nufs = ROUND((nbEtoiles * 10000) / TIMESTAMPDIFF(MINUTE, dateDebut, dateFin));
+    RETURN COALESCE(NULLIF(nufs, 0), 1);
 END$$
 DELIMITER ;
 
@@ -111,8 +155,8 @@ VALUES
 (3, 'Defi 3', 'Description du defi 3', 1, 'Categorie 1', 'Indice 3');
 
 -- Ins�rer les relations entre utilisateurs et d�fis
-INSERT INTO DefiUser (unUser, unDefi, dateDebut, dateFin, nbNufs)
+INSERT INTO DefiUser (unUser, unDefi, dateDebut, dateFin, nbEtoiles)
 VALUES 
-('nathan', 1, TIMESTAMP('2024-01-09', '13:01:02'), TIMESTAMP('2024-01-15', '14:41:23'), 3),
-('mathis', 2, TIMESTAMP('2024-01-10', '09:36:56'), TIMESTAMP('2024-01-16', '17:06:33'), 2),
-('mathieu', 3, TIMESTAMP('2024-01-11', '18:18:18'), TIMESTAMP('2024-01-17', '22:14:55'), 1);
+('nathan', 1, TIMESTAMP('2024-01-09', '13:01:02'), TIMESTAMP('2024-01-10', '14:41:23'), 3),
+('mathis', 2, TIMESTAMP('2024-01-10', '09:36:56'), TIMESTAMP('2024-01-10', '17:06:33'), 2),
+('mathieu', 3, TIMESTAMP('2024-01-11', '18:18:18'), TIMESTAMP('2024-01-11', '22:14:55'), 1);
