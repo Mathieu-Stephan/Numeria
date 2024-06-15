@@ -44,7 +44,7 @@ const Defis = () => {
           <Link key={defi.idDefi} to={`/defis/${defi.idDefi}`} className="defi-square">
             <div className="defi-card">
               <h2>{defi.titre}</h2>
-              <p>{defi.description}</p>
+              <p>{defi.difficulte}</p>
               <div>
                 {[...Array(defi.nbEtoiles)].map((_, index) => (
                   <span key={index} className="star">&#9733;</span>

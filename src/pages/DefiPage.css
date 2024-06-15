@@ -1,41 +1,81 @@
 .defi-page {
-    text-align: center;
-  }
-  
-  .defi-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 20px 0;
-  }
-  
-  .defi-image img {
-    max-width: 100%;
-    border-radius: 8px;
-  }
-  
-  .defi-details {
-    margin-top: 20px;
-    text-align: center;
-    width: 80%;
-  }
-  
-  .start-button {
-    margin-top: 20px;
-    padding: 10px 20px;
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    font-family: 'Montserrat', sans-serif;
-    transition: background-color 0.3s ease-in-out;
-  }
-  
-  .start-button:hover {
-    background-color: var(--secondary-color);
-  }
-  
-  .star {
-    color: gold;
-  }
+  text-align: center;
+}
+
+.defi-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.defi-image img {
+  max-width: 100%;
+  border-radius: 8px;
+}
+
+.defi-details {
+  margin-top: 20px;
+  text-align: left;
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center child elements horizontally */
+}
+
+.start-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #4CAF50; /* Vert */
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+  transition: background-color 0.3s ease-in-out;
+  align-self: center; /* Center the button */
+}
+
+.start-button:hover {
+  background-color: #FF69B4; /* Rose */
+}
+
+.star {
+  color: gold;
+  font-size: 3em; /* Taille des étoiles */
+  margin-bottom: 10px;
+}
+
+.info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.info p {
+  margin: 0 5px;
+}
+
+.objectifs, .criteres {
+  margin-top: 20px;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.objectifs {
+  background-color: #FFD9EC; /* Rose clair */
+}
+
+.criteres {
+  background-color: #C8E6C9; /* Vert clair */
+}
+
+.objectifs ul, .criteres ul {
+  list-style-type: disc;
+  padding-left: 20px;
+}
+
+.section-title {
+  font-weight: bold;
+}
