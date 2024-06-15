@@ -30,10 +30,10 @@ CREATE TABLE Defi (
     idDefi INT NOT NULL AUTO_INCREMENT,
     titre VARCHAR(50) NOT NULL,
     description VARCHAR(255) NOT NULL,
-    nbEtoiles INT NOT NULL,
-    categorie VARCHAR(50) NOT NULL,
-    indice VARCHAR(255),
-    PRIMARY KEY (idDefi)
+    nbEtoiles INT NOT NULL DEFAULT 3,
+    difficulte VARCHAR(50) NOT NULL,
+    PRIMARY KEY (idDefi),
+    CONSTRAINT chk_difficulte CHECK (difficulte IN ('Facile', 'Intermédiaire', 'Difficile'))
 );
 
 CREATE TABLE DefiUser (
@@ -89,7 +89,7 @@ BEGIN
         UPDATE Stat
         SET nbDefis = nbDefis + 1,
             nbEtoiles = nbEtoiles + NEW.nbEtoiles,
-            nufs = nufs + calcul_nufs(NEW.nbEtoiles, NEW.dateDebut, NEW.dateFin)
+            nufs = nufs + calcul_nufs(NEW.unDefi)
         WHERE unUser = NEW.unUser;
     END IF;
 END$$
@@ -105,7 +105,7 @@ BEGIN
         UPDATE Stat
         SET nbDefis = nbDefis + 1,
             nbEtoiles = nbEtoiles + NEW.nbEtoiles,
-            nufs = nufs + calcul_nufs(NEW.nbEtoiles, NEW.dateDebut, NEW.dateFin)
+            nufs = nufs + calcul_nufs(NEW.unDefi)
         WHERE unUser = NEW.unUser;
     END IF;
 END$$
@@ -121,7 +121,7 @@ BEGIN
         UPDATE Stat
         SET nbDefis = nbDefis - 1,
             nbEtoiles = nbEtoiles - OLD.nbEtoiles,
-            nufs = nufs - calcul_nufs(OLD.nbEtoiles, OLD.dateDebut, OLD.dateFin)
+            nufs = nufs - calcul_nufs(OLD.unDefi)
         WHERE unUser = OLD.unUser;
     END IF;
 END$$
@@ -129,13 +129,27 @@ DELIMITER ;
 
 -- Function to calculate nufs
 DELIMITER $$
-CREATE FUNCTION calcul_nufs(nbEtoiles INT, dateDebut TIMESTAMP, dateFin TIMESTAMP)
+CREATE FUNCTION calcul_nufs(leDefi INT)
 RETURNS INT
 DETERMINISTIC
 BEGIN
-    DECLARE nufs INT;   
-    SET nufs = ROUND((nbEtoiles * 10000) / TIMESTAMPDIFF(MINUTE, dateDebut, dateFin));
-    RETURN COALESCE(NULLIF(nufs, 0), 1);
+    DECLARE nufs INT;
+    DECLARE diff_coeff INT;
+
+    SELECT
+        CASE difficulte
+            WHEN 'Facile' THEN 4
+            WHEN 'Intermédiaire' THEN 6
+            WHEN 'Difficile' THEN 9
+        END INTO diff_coeff
+    FROM Defi
+    WHERE idDefi = leDefi;
+
+    SELECT DU.nbEtoiles * diff_coeff INTO nufs
+    FROM DefiUser DU
+    WHERE DU.unDefi = leDefi;
+
+    RETURN nufs;
 END$$
 DELIMITER ;
 
@@ -148,11 +162,11 @@ VALUES
 ('mathieu', 'mathieu@email.com', 'mdp_mathieu', 'Stephan', 'Mathieu', '2024-01-09', '2004-12-20', 'https://via.placeholder.com/150', 1);
 
 -- Ins�rer les d�fis
-INSERT INTO Defi (idDefi, titre, description, nbEtoiles, categorie, indice)
+INSERT INTO Defi (idDefi, titre, description, nbEtoiles, difficulte)
 VALUES 
-(1, 'Defi 1', 'Description du defi 1', 3, 'Categorie 1', 'Indice 1'),
-(2, 'Defi 2', 'Description du defi 2', 2, 'Categorie 2', 'Indice 2'),
-(3, 'Defi 3', 'Description du defi 3', 1, 'Categorie 1', 'Indice 3');
+(1, 'Defi 1', 'Description du defi 1', 3, 'Facile'),
+(2, 'Defi 2', 'Description du defi 2', 3, 'Intermédiaire'),
+(3, 'Defi 3', 'Description du defi 3', 3, 'Difficile');
 
 -- Ins�rer les relations entre utilisateurs et d�fis
 INSERT INTO DefiUser (unUser, unDefi, dateDebut, dateFin, nbEtoiles)

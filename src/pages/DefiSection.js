@@ -55,14 +55,13 @@ const DefiSection = () => {
         <input type="text" name="titre" value={form.titre} onChange={handleInputChange} placeholder="Titre" required />
         <input type="text" name="description" value={form.description} onChange={handleInputChange} placeholder="Description" required />
         <input type="number" name="nbEtoiles" value={form.nbEtoiles} onChange={handleInputChange} placeholder="Nombre d'Étoiles" required />
-        <input type="text" name="categorie" value={form.categorie} onChange={handleInputChange} placeholder="Catégorie" required />
-        <input type="text" name="indice" value={form.indice} onChange={handleInputChange} placeholder="Indice" />
+        <input type="text" name="difficulte" value={form.difficulté} onChange={handleInputChange} placeholder="Difficulté" required />
         <button type="submit">Ajouter</button>
       </form>
       <ul>
         {defis.map(defi => (
           <li key={defi.idDefi}>
-            {defi.titre} - {defi.description} - {defi.nbEtoiles} étoiles - {defi.categorie}
+            {defi.titre} - {defi.description} - {defi.nbEtoiles} étoiles - {defi.difficulté}
             <button onClick={() => handleDelete(defi.idDefi)}>Supprimer</button>
           </li>
         ))}

@@ -35,12 +35,14 @@ const DefiPage = () => {
       <div className="content defi-page">
         <h1>{defi.titre}</h1>
         <div className="defi-content">
-          <div className="defi-image">
-            <img src={defi.image} alt={defi.titre} />
-          </div>
           <div className="defi-details">
             <p>{defi.description}</p>
-            <p>{defi.info}</p>
+            <div>
+                {[...Array(defi.nbEtoiles)].map((_, index) => (
+                  <span key={index} className="star">&#9733;</span>
+                ))}
+            </div>
+            <p>{defi.difficulté}</p>
             <button className="start-button">Commencer le défi</button>
           </div>
         </div>

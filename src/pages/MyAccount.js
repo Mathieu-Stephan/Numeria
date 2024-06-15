@@ -186,7 +186,6 @@ const MyAccount = () => {
         <div className="user-info">
           <p>Défis réussis : {user?.nbDefis || 0}</p>
           <p>Étoiles : {user?.nbEtoiles || 0}</p>
-          <p>Nufs : {user?.nufs || 0}</p>
         </div>
         {isAdmin ? (
           <div className="admin-button-container">

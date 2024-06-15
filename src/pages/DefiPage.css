@@ -16,7 +16,7 @@
   
   .defi-details {
     margin-top: 20px;
-    text-align: left;
+    text-align: center;
     width: 80%;
   }
   
@@ -36,3 +36,6 @@
     background-color: var(--secondary-color);
   }
   
+  .star {
+    color: gold;
+  }

@@ -7,7 +7,7 @@ const HomePage = () => {
     const [defiData, setDefiData] = useState([]);
     const [userCount, setUserCount] = useState(0);
     const [defiCount, setDefiCount] = useState(0);
-    const [totalStars, setTotalStars] = useState(0);
+    const [totalNufs, setTotalNufs] = useState(0);
     const [successfulDefis, setSuccessfulDefis] = useState(0);
 
     useEffect(() => {
@@ -24,9 +24,9 @@ const HomePage = () => {
             .catch(error => console.error('Erreur lors de la récupération du nombre d\'utilisateurs', error));
 
         // Récupérer le nombre total d'étoiles obtenues par les utilisateurs
-        fetch('http://localhost:3001/api/stats/totalStars')
+        fetch('http://localhost:3001/api/stats/totalNufs')
             .then(response => response.json())
-            .then(data => setTotalStars(data[0].etoiles))
+            .then(data => setTotalNufs(data[0].nufs))
             .catch(error => console.error('Erreur lors de la récupération du nombre total d\'étoiles', error));
 
         // Récupérer le nombre de défis réussis
@@ -52,20 +52,20 @@ const HomePage = () => {
                 
                 <div className="counters">
                     <div className="counter">
-                        <h3>Utilisateurs</h3>
+                        <h3>Nombre d'Utilisateurs</h3>
                         <p>{userCount}</p>
                     </div>
                         
                     <div className="counter">
-                        <h3>Défis</h3>
+                        <h3>Nombre de Défis</h3>
                         <p>{defiCount}</p>
                     </div>
                     <div className="counter">
-                        <h3>Étoiles obtenues</h3>
-                        <p>{totalStars}</p>
+                        <h3>Total Nufs obtenus</h3>
+                        <p>{totalNufs}</p>
                     </div>
                     <div className="counter">
-                        <h3>Défis réussis</h3>
+                        <h3>Total Défis réussis</h3>
                         <p>{successfulDefis}</p>
                     </div>
                 </div>
@@ -76,7 +76,7 @@ const HomePage = () => {
                         {defiData.length > 0 ? (
                             defiData.map(defi => (
                                 <li key={defi.id}>
-                                    {defi.titre} - {defi.description}
+                                    {defi.titre}
                                 </li>
                             ))
                         ) : (

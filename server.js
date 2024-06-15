@@ -61,7 +61,7 @@ app.get('/api/defis', (req, res) => {
 app.get('/api/classement/:id', (req, res) => {
     const {id} = req.params;
     if(id == "General") {
-      connection.query('SELECT Stat.unUser, Stat.nbEtoiles, Stat.nufs, SUM(TIMESTAMPDIFF(MINUTE, DU.dateDebut, DU.dateFin)) AS temps FROM Stat INNER JOIN DefiUser DU ON DU.unUser = Stat.unUser GROUP BY Stat.unUser ORDER BY Stat.nbEtoiles, Stat.nufs DESC, temps ASC;', (error, results, fields) => {
+      connection.query('SELECT Stat.unUser, Stat.nbEtoiles, Stat.nufs, SUM(TIMESTAMPDIFF(MINUTE, DU.dateDebut, DU.dateFin)) AS temps FROM Stat INNER JOIN DefiUser DU ON DU.unUser = Stat.unUser GROUP BY Stat.unUser ORDER BY Stat.nufs DESC, temps ASC;', (error, results, fields) => {
         if (error) {
           res.status(500).json({ error: 'Erreur lors de la récupération des données depuis la base de données' });
           console.error('Erreur lors de la récupération des données depuis la base de données', error);
@@ -74,7 +74,7 @@ app.get('/api/classement/:id', (req, res) => {
         res.json(results);
       });
     } else {
-      connection.query('SELECT DU.unUser, DU.nbEtoiles, calcul_nufs(DU.nbEtoiles, DU.dateDebut, DU.dateFin) AS nufs, TIMESTAMPDIFF(MINUTE, DU.dateDebut, DU.dateFin) AS temps FROM Defiuser AS DU INNER JOIN Defi AS D ON D.idDefi = DU.unDefi WHERE D.titre = ? GROUP BY DU.unUser, DU.nbEtoiles, nufs, DU.dateDebut, DU.dateFin ORDER BY DU.nbEtoiles, nufs DESC, temps ASC;', [id], (error, results, fields) => {
+      connection.query('SELECT DU.unUser, DU.nbEtoiles, calcul_nufs(DU.unDefi) AS nufs, TIMESTAMPDIFF(MINUTE, DU.dateDebut, DU.dateFin) AS temps FROM Defiuser AS DU INNER JOIN Defi AS D ON D.idDefi = DU.unDefi WHERE D.titre = ? GROUP BY DU.unUser, DU.nbEtoiles, nufs, DU.dateDebut, DU.dateFin ORDER BY nufs DESC, temps ASC;', [id], (error, results, fields) => {
         if (error) {
           res.status(500).json({ error: 'Erreur lors de la récupération des données depuis la base de données' });
           console.error('Erreur lors de la récupération des données depuis la base de données', error);
@@ -107,7 +107,7 @@ app.get('/api/defis/:id', (req, res) => {
 
 app.post('/api/defis', (req, res) => {
   const { titre, description, nbEtoiles, categorie, indice } = req.body;
-  const query = 'INSERT INTO Defi (titre, description, nbEtoiles, categorie, indice) VALUES (?, ?, ?, ?, ?)';
+  const query = 'INSERT INTO Defi (titre, description, nbEtoiles, difficulté) VALUES (?, ?, ?, ?, ?)';
   connection.query(query, [titre, description, nbEtoiles, categorie, indice], (error, results) => {
     if (error) {
       res.status(500).json({ error: 'Erreur lors de l\'ajout du défi à la base de données' });
@@ -275,8 +275,8 @@ app.get('/api/stats', (req, res) => {
   });
 });
 
-app.get('/api/stats/totalStars', (req, res) => {
-  connection.query('SELECT SUM(nbEtoiles) as etoiles FROM Stat', (error, results) => {
+app.get('/api/stats/totalNufs', (req, res) => {
+  connection.query('SELECT SUM(nufs) as nufs FROM Stat', (error, results) => {
     if (error) {
       res.status(500).json({ error: 'Erreur lors de la récupération des statistiques depuis la base de données' });
       return;
@@ -286,9 +286,9 @@ app.get('/api/stats/totalStars', (req, res) => {
 });
 
 app.post('/api/stats', (req, res) => {
-  const { unUser, nbDefis, nbEtoiles, score, nufs } = req.body;
-  const query = 'INSERT INTO Stat (unUser, nbDefis, nbEtoiles, score, nufs) VALUES (?, ?, ?, ?, ?)';
-  connection.query(query, [unUser, nbDefis, nbEtoiles, score, nufs], (error, results) => {
+  const { unUser, nbDefis, nbEtoiles, nufs } = req.body;
+  const query = 'INSERT INTO Stat (unUser, nbDefis, nbEtoiles, nufs) VALUES (?, ?, ?, ?)';
+  connection.query(query, [unUser, nbDefis, nbEtoiles, nufs], (error, results) => {
     if (error) {
       res.status(500).json({ error: 'Erreur lors de l\'ajout de la statistique à la base de données' });
       console.error('Erreur lors de l\'ajout de la statistique à la base de données', error);
@@ -342,9 +342,9 @@ app.get('/api/defiUsers/count', (req, res) => {
 });
 
 app.post('/api/defiUsers', (req, res) => {
-  const { unUser, unDefi, dateDebut, dateFin, nbEtoilesObtenu } = req.body;
-  const query = 'INSERT INTO DefiUser (unUser, unDefi, dateDebut, dateFin, nbEtoilesObtenu) VALUES (?, ?, ?, ?, ?)';
-  connection.query(query, [unUser, unDefi, dateDebut, dateFin, nbEtoilesObtenu], (error, results) => {
+  const { unUser, unDefi, dateDebut, dateFin, nbEtoiles } = req.body;
+  const query = 'INSERT INTO DefiUser (unUser, unDefi, dateDebut, dateFin, nbEtoiles) VALUES (?, ?, ?, ?, ?)';
+  connection.query(query, [unUser, unDefi, dateDebut, dateFin, nbEtoiles], (error, results) => {
     if (error) {
       res.status(500).json({ error: 'Erreur lors de l\'ajout de la relation utilisateur-défi à la base de données' });
       console.error('Erreur lors de l\'ajout de la relation utilisateur-défi à la base de données', error);

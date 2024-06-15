@@ -55,14 +55,13 @@ const StatSection = () => {
         <input type="text" name="unUser" value={form.unUser} onChange={handleInputChange} placeholder="User Pseudo" required />
         <input type="number" name="nbDefis" value={form.nbDefis} onChange={handleInputChange} placeholder="Nombre de Défis" required />
         <input type="number" name="nbEtoiles" value={form.nbEtoiles} onChange={handleInputChange} placeholder="Nombre d'Étoiles" required />
-        <input type="number" name="score" value={form.score} onChange={handleInputChange} placeholder="Score" required />
         <input type="number" name="nufs" value={form.nufs} onChange={handleInputChange} placeholder="Nufs" required />
         <button type="submit">Ajouter</button>
       </form>
       <ul>
         {stats.map(stat => (
           <li key={stat.unUser}>
-            {stat.unUser} - {stat.nbDefis} défis - {stat.nbEtoiles} étoiles - {stat.score} points - {stat.nufs} nufs
+            {stat.unUser} - {stat.nbDefis} défis - {stat.nbEtoiles} étoiles - {stat.nufs} nufs
             <button onClick={() => handleDelete(stat.unUser)}>Supprimer</button>
           </li>
         ))}

@@ -56,13 +56,13 @@ const DefiUserSection = () => {
         <input type="number" name="unDefi" value={form.unDefi} onChange={handleInputChange} placeholder="Defi ID" required />
         <input type="date" name="dateDebut" value={form.dateDebut} onChange={handleInputChange} required />
         <input type="date" name="dateFin" value={form.dateFin} onChange={handleInputChange} required />
-        <input type="number" name="nbEtoilesObtenu" value={form.nbEtoilesObtenu} onChange={handleInputChange} placeholder="Étoiles Obtenues" required />
+        <input type="number" name="nbEtoiles" value={form.nbEtoiles} onChange={handleInputChange} placeholder="Étoiles" required />
         <button type="submit">Ajouter</button>
       </form>
       <ul>
         {defiUsers.map(du => (
           <li key={`${du.unUser}-${du.unDefi}`}>
-            {du.unUser} - Défi {du.unDefi} - {du.dateDebut} à {du.dateFin} - {du.nbEtoilesObtenu} étoiles
+            {du.unUser} - Défi {du.unDefi} - {du.dateDebut} à {du.dateFin} - {du.nbEtoiles} étoiles
             <button onClick={() => handleDelete(du.unUser, du.unDefi)}>Supprimer</button>
           </li>
         ))}
