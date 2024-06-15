@@ -420,7 +420,7 @@ Page défis
 }
 
 .error {
-  color: black; /* Texte en noir */
+  color: var(--accent-color-2); /* Texte en noir */
   font-size: 0.875rem;
   margin-top: 5px;
 }

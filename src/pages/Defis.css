@@ -32,8 +32,17 @@
   margin-bottom: 10px;
 }
 
+.stars-container {
+  margin-top: 10px;
+}
+
 .star {
-  color: gold;
+  color: grey; /* Étoiles non remplies */
+  font-size: 1.5em; /* Taille des étoiles */
+}
+
+.star.filled {
+  color: gold; /* Étoiles remplies */
 }
 
 .defi-square {
@@ -49,6 +58,13 @@
 .defi-square .defi-card h2,
 .defi-square .defi-card p {
   text-decoration: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .defi-card,
+  .defi-square:hover .defi-card {
+    transition: none;
+  }
 }
 
 @media (max-width: 768px) {

@@ -9,12 +9,30 @@ const Defis = () => {
   const [defis, setDefis] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const pseudo = localStorage.getItem('pseudo'); // Récupérer le pseudo du user connecté
 
   useEffect(() => {
     const fetchDefis = async () => {
       try {
         const response = await axios.get('http://localhost:3001/api/defis');
-        setDefis(response.data);
+        const defisWithStars = await Promise.all(
+          response.data.map(async (defi) => {
+            try {
+              const starsResponse = await axios.get(`http://localhost:3001/api/defiUsers/stars/${pseudo}/${defi.idDefi}`);
+              return {
+                ...defi,
+                nbEtoiles: starsResponse.data.nbEtoiles  // Récupérer le nombre d'étoiles pour ce défi
+              };
+            } catch (error) {
+              console.error(`Erreur lors de la récupération des étoiles pour le défi ${defi.idDefi}:`, error);
+              return {
+                ...defi,
+                nbEtoiles: 0  // Par défaut, aucun étoile si erreur ou si aucune étoile obtenue
+              };
+            }
+          })
+        );
+        setDefis(defisWithStars);
         setLoading(false);
       } catch (error) {
         setError('Erreur lors de la récupération des défis');
@@ -23,7 +41,7 @@ const Defis = () => {
     };
 
     fetchDefis();
-  }, []);
+  }, [pseudo]);
 
   if (loading) {
     return <div>Chargement...</div>;
@@ -45,9 +63,9 @@ const Defis = () => {
             <div className="defi-card">
               <h2>{defi.titre}</h2>
               <p>{defi.difficulte}</p>
-              <div>
-                {[...Array(defi.nbEtoiles)].map((_, index) => (
-                  <span key={index} className="star">&#9733;</span>
+              <div className="stars-container">
+                {[...Array(3)].map((_, index) => (
+                  <span key={index} className={`star ${index < defi.nbEtoiles ? 'filled' : ''}`}>&#9733;</span>
                 ))}
               </div>
             </div>

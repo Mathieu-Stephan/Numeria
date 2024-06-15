@@ -413,3 +413,18 @@ app.get('/api/defiUsers/:unUser/:unDefi', (req, res) => {
     res.json(results[0]);
   });
 });
+
+app.get('/api/defiUsers/stars/:unUser/:unDefi', (req, res) => {
+  const { unUser, unDefi } = req.params;
+  connection.query('SELECT nbEtoiles FROM DefiUser WHERE unUser = ? AND unDefi = ?', [unUser, unDefi], (error, results) => {
+    if (error) {
+      res.status(500).json({ error: 'Erreur lors de la récupération du nombre d\'étoiles depuis la base de données' });
+      return;
+    }
+    if (results.length === 0) {
+      res.json({ nbEtoiles: 0 }); // Aucune étoile si aucun enregistrement trouvé
+      return;
+    }
+    res.json({ nbEtoiles: results[0].nbEtoiles });
+  });
+});

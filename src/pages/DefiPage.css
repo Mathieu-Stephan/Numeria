@@ -15,7 +15,6 @@
 }
 
 .defi-details {
-  margin-top: 20px;
   text-align: left;
   width: 80%;
   display: flex;
@@ -26,7 +25,7 @@
 .start-button {
   margin-top: 20px;
   padding: 10px 20px;
-  background-color: #4CAF50; /* Vert */
+  background-color: #7DCFB6; /* Vert */
   color: white;
   border: none;
   border-radius: 20px;
@@ -37,13 +36,18 @@
 }
 
 .start-button:hover {
-  background-color: #FF69B4; /* Rose */
+  background-color: #F88DAD; /* Rose */
 }
 
+/* Style pour les étoiles */
 .star {
-  color: gold;
+  color: grey; /* Étoiles non remplies */
   font-size: 3em; /* Taille des étoiles */
-  margin-bottom: 10px;
+  margin-bottom: 30px;
+}
+
+.star.filled {
+  color: gold; /* Étoiles remplies */
 }
 
 .info {
@@ -58,7 +62,8 @@
 }
 
 .objectifs, .criteres {
-  margin-top: 20px;
+  margin-top: 1px;
+  margin-bottom: 30px;
   padding: 10px;
   border-radius: 8px;
 }
@@ -78,4 +83,5 @@
 
 .section-title {
   font-weight: bold;
+  margin-top: 10px;
 }
