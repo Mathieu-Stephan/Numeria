@@ -428,3 +428,22 @@ app.get('/api/defiUsers/stars/:unUser/:unDefi', (req, res) => {
     res.json({ nbEtoiles: results[0].nbEtoiles });
   });
 });
+
+app.get('/api/defiUsers/time/:pseudo/:idDefi', (req, res) => {
+  const { pseudo, idDefi } = req.params;
+  connection.query('SELECT TIMESTAMPDIFF(MINUTE, dateDebut, dateFin) AS temps FROM DefiUser WHERE unUser = ? AND unDefi = ?',
+    [pseudo, idDefi],
+    (error, results, fields) => {
+      if (error) {
+        console.error('Erreur lors de la récupération du temps passé :', error);
+        res.status(500).json({ error: 'Erreur lors de la récupération du temps passé depuis la base de données' });
+        return;
+      }
+      if (results.length > 0) {
+        res.json(results[0]); // Retourne le premier résultat trouvé (devrait être unique)
+      } else {
+        res.status(404).json({ error: 'Aucun temps trouvé pour cet utilisateur et ce défi' });
+      }
+    }
+  );
+});
