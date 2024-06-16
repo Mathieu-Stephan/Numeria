@@ -46,7 +46,6 @@ const HomePage = () => {
         <div className='container'>
             <Navbar />
             <div className='content'>
-                <img src="Logo_B.png" alt="CypherCode Logo" id="logo" />
                 <h1>Numeria</h1>
                 <p>Bienvenue sur Numeria, la plateforme ultime pour relever des défis passionnants et développer vos compétences en codage !</p>
                 
