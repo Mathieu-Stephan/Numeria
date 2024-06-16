@@ -1,7 +1,5 @@
-// DefiPage.js
-
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import Navbar from './NavBar';
 import Footer from './Footer';
 import './DefiPage.css';
@@ -10,9 +8,12 @@ import axios from 'axios';
 const DefiPage = () => {
   const { id } = useParams();
   const [defi, setDefi] = useState(null);
-  const [userStars, setUserStars] = useState(0); // State pour les étoiles de l'utilisateur
-  const [userTime, setUserTime] = useState(0); // State pour le temps passé sur le défi par l'utilisateur
-  const pseudo = localStorage.getItem('pseudo'); // Récupérer le pseudo de l'utilisateur connecté
+  const [userStars, setUserStars] = useState(0);
+  const [userTime, setUserTime] = useState(0);
+  const pseudo = localStorage.getItem('pseudo');
+  const hasDefi = localStorage.getItem('defi');
+
+  const history = useHistory();
 
   useEffect(() => {
     // Fonction pour récupérer les détails du défi
@@ -49,7 +50,15 @@ const DefiPage = () => {
     fetchDefi();
     fetchUserStars();
     fetchUserTime();
-  }, [id, pseudo]);
+  }, [id, pseudo, hasDefi]);
+
+  // Fonction à exécuter lorsque l'utilisateur clique sur "Commencer le défi"
+  const handleStartDefi = async () => {
+
+    localStorage.setItem("defi", id);
+    window.location.replace(`http://localhost:301${id}/defi/${id}/${pseudo}`);
+    
+  };
 
   if (!defi) {
     return (
@@ -72,16 +81,12 @@ const DefiPage = () => {
         <div className="defi-content">
           <div className="defi-details">
             <div className="info">
-              {/* Affichage des étoiles en fonction du nombre d'étoiles de l'utilisateur */}
               {[...Array(3)].map((_, index) => (
                 <span key={index} className={`star ${index < userStars ? 'filled' : ''}`}>&#9733;</span>
               ))}
             </div>
-            {/* Affichage du temps passé par l'utilisateur */}
-            <p> <strong> Temps passé sur ce défi : {userTime} minutes </strong> </p>
-
+            <p><strong>Temps passé sur ce défi : {userTime} minutes</strong></p>
             <p>{defi.description}</p>
-            
             <p className="section-title">Objectifs Techniques :</p>
             <div className="objectifs">
               <ul>
@@ -90,7 +95,6 @@ const DefiPage = () => {
                 ))}
               </ul>
             </div>
-
             <p className="section-title">Critères :</p>
             <div className="criteres">
               <ul>
@@ -99,7 +103,13 @@ const DefiPage = () => {
                 ))}
               </ul>
             </div>
-            <button className="start-button">Commencer le défi</button>
+            {pseudo && (
+              !hasDefi ? (
+                <button className="start-button" onClick={handleStartDefi}>Commencer le défi</button>
+              ) : (
+                <button className="stop-button">Arrêter le défi</button>
+              )
+            )}
           </div>
         </div>
       </div>

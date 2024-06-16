@@ -39,6 +39,23 @@
   background-color: #F88DAD; /* Rose */
 }
 
+.stop-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #F88DAD; /* Vert */
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+  transition: background-color 0.3s ease-in-out;
+  align-self: center; /* Center the button */
+}
+
+.stop-button:hover {
+  background-color: #7DCFB6; /* Rose */
+}
+
 /* Style pour les étoiles */
 .star {
   color: grey; /* Étoiles non remplies */

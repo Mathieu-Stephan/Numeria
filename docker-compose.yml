@@ -38,8 +38,8 @@ services:
       - MYSQL_HOST=mysql
     depends_on:
       - mysql
-
-
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
 
 networks:
   numeria-network:
