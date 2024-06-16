@@ -7,7 +7,7 @@ const DefiSection = () => {
     titre: '',
     description: '',
     nbEtoiles: 0,
-    difficulte: '', // Corrected the form key
+    difficulte: '', 
   });
 
   useEffect(() => {

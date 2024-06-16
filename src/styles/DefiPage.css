@@ -19,52 +19,51 @@
   width: 80%;
   display: flex;
   flex-direction: column;
-  align-items: center; /* Center child elements horizontally */
+  align-items: center;
 }
 
 .start-button {
   margin-top: 20px;
   padding: 10px 20px;
-  background-color: #7DCFB6; /* Vert */
+  background-color: #7DCFB6; 
   color: white;
   border: none;
   border-radius: 20px;
   cursor: pointer;
   font-family: 'Montserrat', sans-serif;
   transition: background-color 0.3s ease-in-out;
-  align-self: center; /* Center the button */
+  align-self: center; 
 }
 
 .start-button:hover {
-  background-color: #ff76ac; /* Rose */
+  background-color: #ff76ac; 
 }
 
 .stop-button {
   margin-top: 20px;
   padding: 10px 20px;
-  background-color: #ff76ac; /* Vert */
+  background-color: #ff76ac; 
   color: white;
   border: none;
   border-radius: 20px;
   cursor: pointer;
   font-family: 'Montserrat', sans-serif;
   transition: background-color 0.3s ease-in-out;
-  align-self: center; /* Center the button */
+  align-self: center; 
 }
 
 .stop-button:hover {
-  background-color: #7DCFB6; /* Rose */
+  background-color: #7DCFB6; 
 }
 
-/* Style pour les étoiles */
 .star {
-  color: grey; /* Étoiles non remplies */
-  font-size: 3em; /* Taille des étoiles */
+  color: grey; 
+  font-size: 3em; 
   margin-bottom: 30px;
 }
 
 .star.filled {
-  color: gold; /* Étoiles remplies */
+  color: gold; 
 }
 
 .info {
@@ -86,11 +85,11 @@
 }
 
 .objectifs {
-  background-color: #ff76ac; /* Rose clair */
+  background-color: #ff76ac; 
 }
 
 .criteres {
-  background-color: #7DCFB6; /* Vert clair */
+  background-color: #7DCFB6;
 }
 
 .objectifs ul, .criteres ul {

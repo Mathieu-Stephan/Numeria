@@ -12,7 +12,6 @@ app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 var corsOptions = {
   origin: '*',
   optionsSuccessStatus: 200
-
 }
 
 app.use(cors(corsOptions));
@@ -28,7 +27,6 @@ const connection = mysql.createConnection({
   insecureAuth: true
 });
 
-
 setTimeout(() => {
   connection.connect(function(err) {
     if (err) {
@@ -42,8 +40,7 @@ setTimeout(() => {
       console.log(`Le serveur écoute sur le port ${port}`);
     });
   });
-}, 10000); // Attendre 10 secondes
-
+}, 10000);
 
 //Points d'entrée de l'API
 app.get('/api/defis', (req, res) => {
@@ -128,7 +125,6 @@ app.delete('/api/defis/:idDefi', (req, res) => {
   });
 });
 
-//Points d'entrée de l'API pour User
 app.get('/api/users', (req, res) => {
   connection.query('SELECT * FROM User', (error, results) => {
     if (error) {
@@ -203,7 +199,6 @@ app.post('/api/users/change-password', (req, res) => {
   });
 });
 
-
 app.get('/api/users/get-email/:email', (req, res) => {
   const { email } = req.params;
   console.log(email);
@@ -261,7 +256,6 @@ app.get('/api/users/get-pseudo/:pseudo', (req, res) => {
     res.json(results[0]);
   });
 });
-
 
 //Points d'entrée de l'API pour Stat
 app.get('/api/stats', (req, res) => {

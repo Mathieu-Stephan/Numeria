@@ -6,7 +6,7 @@
 .select-container select {
   padding: 10px;
   font-size: 16px;
-  border-radius: 20px; /* Arrondir les coins */
+  border-radius: 20px; 
   border: 1px solid #ccc;
 }
 
@@ -20,10 +20,9 @@
   padding: 10px;
   background-color: #f0f0f0;
   border: 1px solid #ccc;
-  border-radius: 20px; /* Arrondir les coins */
+  border-radius: 20px; 
 }
 
-/* Colorer le premier élément en vert et les autres en rose */
 .ranking-container li:first-child {
   background-color: #7DCFB6;
 }

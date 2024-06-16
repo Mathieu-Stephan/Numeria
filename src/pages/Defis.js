@@ -9,7 +9,7 @@ const Defis = () => {
   const [defis, setDefis] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const pseudo = localStorage.getItem('pseudo'); // Récupérer le pseudo du user connecté
+  const pseudo = localStorage.getItem('pseudo');
 
   useEffect(() => {
     const fetchDefis = async () => {
@@ -21,13 +21,13 @@ const Defis = () => {
               const starsResponse = await axios.get(`http://localhost:3001/api/defiUsers/stars/${pseudo}/${defi.idDefi}`);
               return {
                 ...defi,
-                nbEtoiles: starsResponse.data.nbEtoiles  // Récupérer le nombre d'étoiles pour ce défi
+                nbEtoiles: starsResponse.data.nbEtoiles
               };
             } catch (error) {
               console.error(`Erreur lors de la récupération des étoiles pour le défi ${defi.idDefi}:`, error);
               return {
                 ...defi,
-                nbEtoiles: 0  // Par défaut, aucun étoile si erreur ou si aucune étoile obtenue
+                nbEtoiles: 0  
               };
             }
           })

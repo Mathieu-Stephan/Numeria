@@ -13,7 +13,7 @@ const MyAccount = () => {
   const [user, setUser] = useState(null);
   const [editProfile, setEditProfile] = useState(false);
   const [editPassword, setEditPassword] = useState(false);
-  const [showValidateButton, setShowValidateButton] = useState(false); // New state
+  const [showValidateButton, setShowValidateButton] = useState(false); 
   const [form, setForm] = useState({
     pseudo: '',
     nom: '',
@@ -39,7 +39,6 @@ const MyAccount = () => {
         setIsAdmin(true);
       }
       setIsLoggedIn(true);
-      // Fetch user data from API (replace with actual API call)
       fetch(`http://localhost:3001/api/users/get-pseudo/${pseudo}`)
         .then(response => response.json())
         .then(data => {
@@ -86,7 +85,7 @@ const MyAccount = () => {
           const reader = new FileReader();
           reader.onloadend = () => {
             setForm({ ...form, photo: reader.result });
-            setShowValidateButton(true); // Show validate button
+            setShowValidateButton(true); 
           };
           reader.readAsDataURL(result);
         },
@@ -99,7 +98,6 @@ const MyAccount = () => {
 
   const handleProfileSubmit = (e) => {
     e.preventDefault();
-    // Submit updated profile data to API (replace with actual API call)
     fetch('http://localhost:3001/api/users', {
       method: 'PUT',
       headers: {
@@ -111,8 +109,7 @@ const MyAccount = () => {
       .then(data => {
         setUser(data);
         setEditProfile(false);
-        setShowValidateButton(false); // Hide validate button
-        //refresh the page
+        setShowValidateButton(false); 
         history.go(0);
       })
       .catch(error => console.error('Error updating profile:', error));

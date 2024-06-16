@@ -9,7 +9,6 @@ const Classement = () => {
   const [defis, setDefis] = useState([]);
 
   useEffect(() => {
-    // Récupérer les défis
     fetch('http://localhost:3001/api/defis')
       .then(response => response.json())
       .then(data => setDefis(data))

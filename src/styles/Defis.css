@@ -14,14 +14,14 @@
 
 .defi-card {
   width: 300px;
-  border: 1px solid #7DCFB6; /* Bordure verte assortie */
+  border: 1px solid #7DCFB6;
   border-radius: 8px;
   padding: 20px;
-  background-color: #7DCFB6; /* Fond vert */
+  background-color: #7DCFB6;
   text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   text-decoration: none;
-  color: white; /* Texte blanc */
+  color: white; 
 }
 
 .defi-card h2 {
@@ -37,12 +37,12 @@
 }
 
 .star {
-  color: grey; /* Étoiles non remplies */
-  font-size: 1.5em; /* Taille des étoiles */
+  color: grey; 
+  font-size: 1.5em; 
 }
 
 .star.filled {
-  color: gold; /* Étoiles remplies */
+  color: gold; 
 }
 
 .defi-square {
