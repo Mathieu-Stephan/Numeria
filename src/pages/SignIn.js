@@ -124,8 +124,9 @@ const SignIn = () => {
               />
               <label>Mot de passe:</label>
             </div>
-            {errors && <p className="error">{errors}</p>}
+            
             <button type="submit" className="submit-button">Se connecter</button>
+            {errors && <p className="error">{errors}</p>}
           </form>
         )}
       </div>

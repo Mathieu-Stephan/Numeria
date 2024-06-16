@@ -449,7 +449,7 @@ h1{
 .error {
   color: var(--accent-color-2);
   font-size: 0.875rem;
-  margin-top: 5px;
+  margin-top: 25px;
   text-align: center;
 }
 
