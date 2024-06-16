@@ -21,7 +21,7 @@ Pour installer Numeria, suivez ces étapes :
 
 Assurez-vous que les ports 3000 et supérieurs sont ouverts sur votre machine. Vous devez bien attendre que les conteneurs soient prêts avant d'ouvrir votre navigateur.
 
-<h4 style="color:red;">En cas d'erreur, annulé le processus avec `Ctrl+C` et relancez `docker-compose up`. Si l'erreur persiste, vérifiez que les ports 3000 et supérieurs sont ouverts sur votre machine.</h4>
+<h4 style="color:red;">❗ En cas d'erreur, annulé le processus avec `Ctrl+C` et relancez `docker-compose up`. Si l'erreur persiste, vérifiez que les ports 3000 et supérieurs sont ouverts sur votre machine. ❗</h4>
 
 Après avoir suivi ces étapes, vous devriez voir l'application Numeria dans votre navigateur !
 
@@ -73,17 +73,42 @@ Pour ce projet, nous avons utilisé des technologies imposées par le cahier des
 - 'package-lock.json' : Fichier de verrouillage des dépendances de Node.js pour l'application.
 - 'server.js' : Fichier principal du serveur Node.js.
 
-### Explication précise des pages 📄
+## Explication précise des pages 📄
 - 'HomePage.js' : 
 Page d'accueil de l'application. Elle affiche les statistiques et les défis disponibles. Elle contient les logos de l'application et les liens vers les autres pages. Cette page est accessible par tous les utilisateurs et contient les composants NavBar.js et Footer.js comme tous les autres pages.
 - 'NavBar.js' :
 Barre de navigation de l'application. Elle contient les liens vers les défis, le classement, les CGU et les infosrmations relative au compte (connection, création, modification et déconnection). Elle est présente sur toutes les pages de l'application.
 - 'Footer.js' :
 Pied de page de l'application. Il contient les liens vers le github et gitlab du projet. Il est présent sur toutes les pages de l'application.
-- 'Defis.js' : Page qui liste les défis disponibles. Elle contient une liste de défis avec leur titre, difficulté et nombre d'étoiles. Elle est accessible par tous les utilisateurs. Cliquer sur un défi redirige vers la page spécifique du défi.
-- 'DefiPage.js' : Page spécifique à un défi. Elle contient la description complète du défi ainsi que le temps passé, les objectifs techniques et les critères de validation. En bas de la page, un bouton redirige vers la page de résolution du défi. Si l'utilisateur est connecté, il peut démarer le défi (ce qui empêche de commencer un autre défi tant que celui-ci n'est pas terminé ou annulé).
-- 'Classment.js' : Page qui liste les utilisateurs par score. Elle contient une liste d'utilisateurs avec leur pseudo et leur score. Elle est accessible par tous les utilisateurs.
-- 'SignIn.js' : Page de connexion de l'application. Elle contient un formulaire de connexion avec un champ pour le mail et un pour le mot de passe. Elle est accessible par tous les utilisateurs.
-- 'SignUp.js' : Page de création de compte de l'application. Elle contient un formulaire de création de compte avec un champ pour le pseudo, un pour le mail, un pour le mot de passe, deux pour le nom et le prénom et un pour la date de naissance. Elle est accessible par tous les utilisateurs. Après la création du compte, l'utilisateur est redirigé vers la page de connexion. Il a ensuite accès à toutes les fonctionnalités de l'application. Dont la page de gestion de compte.
-- 'MyAccount.js' : Page de gestion de compte de l'application. Elle contient les informations de l'utilisateur connecté (pseudo, mail, nom, prénom, date de naissance) et un bouton pour se déconnecter. Elle est accessible par tous les utilisateurs connectés. Dans cette page, les utilisateurs peuvent modifier leur mot de passe, leur nom, prénom et date de naissance. Ils peuvent aussi changer leur avatar. Les utilisateurs notés comme administrateurs ont accès à une page de gestion des utilisateurs et des défis.
-- 'AdminPage.js' : Page de gestion des utilisateurs et des défis. Elle contient plusieurs composants permettant aux administrateurs de gérer les utilisateurs et les défis. Les administrateurs peuvent voir la liste des utilisateurs, les modifier, les supprimer et les ajouter. Ils peuvent aussi voir la liste des défis, les modifier, les supprimer et les ajouter. Cette page est accessible uniquement par les utilisateurs notés comme administrateurs.
+- 'Defis.js' : 
+Page qui liste les défis disponibles. Elle contient une liste de défis avec leur titre, difficulté et nombre d'étoiles. Elle est accessible par tous les utilisateurs. Cliquer sur un défi redirige vers la page spécifique du défi.
+- 'DefiPage.js' : 
+Page spécifique à un défi. Elle contient la description complète du défi ainsi que le temps passé, les objectifs techniques et les critères de validation. En bas de la page, un bouton redirige vers la page de résolution du défi. Si l'utilisateur est connecté, il peut démarer le défi (ce qui empêche de commencer un autre défi tant que celui-ci n'est pas terminé ou annulé).
+- 'Classment.js' : 
+Page qui liste les utilisateurs par score. Elle contient une liste d'utilisateurs avec leur pseudo et leur score. Elle est accessible par tous les utilisateurs.
+- 'SignIn.js' : 
+Page de connexion de l'application. Elle contient un formulaire de connexion avec un champ pour le mail et un pour le mot de passe. Elle est accessible par tous les utilisateurs.
+- 'SignUp.js' : 
+Page de création de compte de l'application. Elle contient un formulaire de création de compte avec un champ pour le pseudo, un pour le mail, un pour le mot de passe, deux pour le nom et le prénom et un pour la date de naissance. Elle est accessible par tous les utilisateurs. Après la création du compte, l'utilisateur est redirigé vers la page de connexion. Il a ensuite accès à toutes les fonctionnalités de l'application. Dont la page de gestion de compte.
+- 'MyAccount.js' : 
+Page de gestion de compte de l'application. Elle contient les informations de l'utilisateur connecté (pseudo, mail, nom, prénom, date de naissance) et un bouton pour se déconnecter. Elle est accessible par tous les utilisateurs connectés. Dans cette page, les utilisateurs peuvent modifier leur mot de passe, leur nom, prénom et date de naissance. Ils peuvent aussi changer leur avatar. Les utilisateurs notés comme administrateurs ont accès à une page de gestion des utilisateurs et des défis.
+- 'AdminPage.js' : 
+Page de gestion des utilisateurs et des défis. Elle contient plusieurs composants permettant aux administrateurs de gérer les utilisateurs et les défis. Les administrateurs peuvent voir la liste des utilisateurs, les modifier, les supprimer et les ajouter. Ils peuvent aussi voir la liste des défis, les modifier, les supprimer et les ajouter. Cette page est accessible uniquement par les utilisateurs notés comme administrateurs.
+- Les component 'Section':
+Il s'agit des différents composant de la page adminPage.js. Ils permettent de gérer les utilisateurs et les défis. Ils sont utilisés pour afficher les listes, les formulaires et les boutons de gestion des utilisateurs et des défis.
+
+## Explication des Défis 🧩
+Les défis sont des problèmes algorithmiques à résoudre. Ils sont composés d'une description, d'un temps passé, d'objectifs techniques et de critères de validation. Les utilisateurs peuvent résoudre les défis en soumettant une solution. Les solutions sont testées en temps réel et les utilisateurs reçoivent un score en fonction de la qualité de leur solution. Les défis sont classés par difficulté et par nombre d'étoiles. Les utilisateurs peuvent voir les défis disponibles et les résoudre en se connectant à leur compte.
+
+### Défi "Recherche de mots dans des fichiers" 📝
+Pour faire tourner ce défi, nous avons dû créer un docker spécifique pour le back-end. Ce docker utilise Node.js et Express.js pour le serveur. Il y a aussi une interface moderne auquel l'utilisateur peut soumettre sa solution en codant dans un éditeur de code. Lorsque l'utilisateur soumet sa solution, le serveur la teste et renvoie un score en fonction de la qualité de la solution. Les utilisateurs peuvent voir leur score et leur temps passé sur la page du défi.
+
+### TODO
+
+## Auteurs ✒️
+- **Nathan Basol**
+- **Mathis Gueguen**
+- **Mathieu Stephan**
+
+### Conclusion 🎉
+Merci d'avoir lu la documentation de Numeria. Nous espérons que vous avez apprécié l'application et que vous avez trouvé les informations que vous cherchiez. Si vous avez des questions ou des commentaires, n'hésitez pas à nous contacter. Nous serions ravis de vous aider. Bonne journée !

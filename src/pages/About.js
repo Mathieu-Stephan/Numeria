@@ -1,6 +1,6 @@
 import React from 'react';
-import Navbar from './NavBar';
-import Footer from './Footer';
+import Navbar from '../components/NavBar';
+import Footer from '../components/Footer';
 
 const AboutPage = () => {
     return (
