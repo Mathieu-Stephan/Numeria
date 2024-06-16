@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from './NavBar';
 import Footer from './Footer';
-import './HomePage.css';
+import '../styles/HomePage.css';
 
 const HomePage = () => {
     const [defiData, setDefiData] = useState([]);

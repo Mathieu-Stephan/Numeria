@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import Navbar from './NavBar';
 import Footer from './Footer';
-import './DefiPage.css';
+import '../styles/DefiPage.css';
 import axios from 'axios';
 
 const DefiPage = () => {

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from './NavBar';
 import Footer from './Footer';
-import './Defis.css';
+import '../styles/Defis.css';
 import axios from 'axios';
 
 const Defis = () => {

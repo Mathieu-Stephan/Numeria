@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from './NavBar';
 import Footer from './Footer';
-import './Classement.css';
+import '../styles/Classement.css';
 
 const Classement = () => {
   const [currentChallenge, setCurrentChallenge] = useState('General');

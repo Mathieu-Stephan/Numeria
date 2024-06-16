@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './Admin.css'; 
+import '../styles/Admin.css'; 
 
 const DefiSection = () => {
   const [defis, setDefis] = useState([]);
