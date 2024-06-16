@@ -49,9 +49,9 @@ const DefiSection = () => {
   };
 
   return (
-    <div className="defis-container">
+    <div className="admin-defis-container">
       <h2>Défis</h2>
-      <form onSubmit={handleSubmit} className="input-container">
+      <form onSubmit={handleSubmit} className="admin-input-container">
         <input type="text" name="titre" value={form.titre} onChange={handleInputChange} placeholder="Titre" required />
         <input type="text" name="description" value={form.description} onChange={handleInputChange} placeholder="Description" required />
         <input type="number" name="nbEtoiles" value={form.nbEtoiles} onChange={handleInputChange} placeholder="Nombre d'Étoiles" required />

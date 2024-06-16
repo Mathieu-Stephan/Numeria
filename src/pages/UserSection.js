@@ -54,9 +54,9 @@ const UserSection = () => {
   };
 
   return (
-    <div className="users-container">
+    <div className="admin-users-container">
       <h2>Users</h2>
-      <form onSubmit={handleSubmit} className="input-container">
+      <form onSubmit={handleSubmit} className="admin-input-container">
         <input type="text" name="pseudo" value={form.pseudo} onChange={handleInputChange} placeholder="Pseudo" required />
         <input type="email" name="email" value={form.email} onChange={handleInputChange} placeholder="Email" required />
         <input type="password" name="motDePasse" value={form.motDePasse} onChange={handleInputChange} placeholder="Mot de passe" required />

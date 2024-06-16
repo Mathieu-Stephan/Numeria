@@ -50,9 +50,9 @@ const DefiUserSection = () => {
   };
 
   return (
-    <div className="defis-container">
+    <div className="admin-defis-container">
       <h2>Defi Users</h2>
-      <form onSubmit={handleSubmit} className="input-container">
+      <form onSubmit={handleSubmit} className="admin-input-container">
         <input type="text" name="unUser" value={form.unUser} onChange={handleInputChange} placeholder="User Pseudo" required />
         <input type="number" name="unDefi" value={form.unDefi} onChange={handleInputChange} placeholder="Defi ID" required />
         <input type="date" name="dateDebut" value={form.dateDebut} onChange={handleInputChange} required />

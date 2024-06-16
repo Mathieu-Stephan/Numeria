@@ -50,19 +50,19 @@ const StatSection = () => {
   };
 
   return (
-    <div className="stat-section">
+    <div className="admin-stat-section">
       <h2>Stats</h2>
-      <form onSubmit={handleSubmit} className="stat-form">
-        <div className="input-container">
+      <form onSubmit={handleSubmit} className="admin-stat-form">
+        <div className="admin-input-container">
           <input type="text" name="unUser" value={form.unUser} onChange={handleInputChange} placeholder="User Pseudo" required />
         </div>
-        <div className="input-container">
+        <div className="admin-input-container">
           <input type="number" name="nbDefis" value={form.nbDefis} onChange={handleInputChange} placeholder="Nombre de Défis" required />
         </div>
-        <div className="input-container">
+        <div className="admin-input-container">
           <input type="number" name="nbEtoiles" value={form.nbEtoiles} onChange={handleInputChange} placeholder="Nombre d'Étoiles" required />
         </div>
-        <div className="input-container">
+        <div className="admin-input-container">
           <input type="number" name="nufs" value={form.nufs} onChange={handleInputChange} placeholder="Nufs" required />
         </div>
         <button type="submit" className="submit-button">Ajouter</button>
