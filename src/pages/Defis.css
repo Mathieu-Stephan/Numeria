@@ -1,5 +1,6 @@
 .content {
   text-align: center;
+  margin-bottom: 1px;
 }
 
 .defis-container {
@@ -14,14 +15,14 @@
 
 .defi-card {
   width: 300px;
-  border: 1px solid #ccc;
+  border: 1px solid #7DCFB6; /* Bordure verte assortie */
   border-radius: 8px;
   padding: 20px;
-  background-color: #f9f9f9;
+  background-color: #7DCFB6; /* Fond vert */
   text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   text-decoration: none;
-  color: inherit;
+  color: white; /* Texte blanc */
 }
 
 .defi-card h2 {

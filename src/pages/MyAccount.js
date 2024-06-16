@@ -231,7 +231,7 @@ const MyAccount = () => {
                 required
               />
               <button type="submit">Sauvegarder</button>
-              <button type="button" onClick={() => setEditProfile(false)}>Annuler</button>
+              <button class="annuler-btn" type="button" onClick={() => setEditProfile(false)}>Annuler</button>
             </form>
           ) : (
             <button onClick={() => setEditProfile(true)}>Modifier le profil</button>
@@ -268,7 +268,7 @@ const MyAccount = () => {
                 required
               />
               <button type="submit">Changer le mot de passe</button>
-              <button type="button" onClick={() => setEditPassword(false)}>Annuler</button>
+              <button class="annuler-btn" type="button" onClick={() => setEditPassword(false)}>Annuler</button>
             </form>
           ) : (
             <button onClick={() => setEditPassword(true)}>Changer le mot de passe</button>

@@ -20,20 +20,27 @@ const SignUp = () => {
     estAdmin: 0
   });
 
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   useEffect(() => {
-      const pseudo = localStorage.getItem('pseudo');
-      if (pseudo) {
-        setIsLoggedIn(true);
-      } else {
-        setIsLoggedIn(false);
-      }
+    const pseudo = localStorage.getItem('pseudo');
+    setIsLoggedIn(!!pseudo);
   }, []);
 
   const validateForm = () => {
-    const newErrors = {};
+    if (
+      !formData.pseudo ||
+      !formData.email ||
+      !formData.motDePasse ||
+      !formData.nom ||
+      !formData.prenom ||
+      !formData.dateNaissance
+    ) {
+      setErrors('Tous les champs doivent être remplis');
+      return false;
+    }
+
     const now = new Date();
     const birthDate = new Date(formData.dateNaissance);
     let age = now.getFullYear() - birthDate.getFullYear();
@@ -44,37 +51,13 @@ const SignUp = () => {
       age--;
     }
 
-    if (!formData.pseudo || formData.pseudo.length > 15) {
-      newErrors.pseudo = "Le pseudonyme n'est pas valide";
+    if (age < 15 || age > 25) {
+      setErrors('L\'âge doit être compris entre 15 et 25 ans');
+      return false;
     }
 
-    if (!formData.email) {
-      newErrors.email = "L'adresse e-mail est requise";
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "L'adresse e-mail n'est pas valide";
-    }
-
-    if (!formData.motDePasse) {
-      newErrors.motDePasse = 'Le mot de passe est requis';
-    }
-
-    if (!formData.nom) {
-      newErrors.nom = 'Le nom est requis';
-    }
-
-    if (!formData.prenom) {
-      newErrors.prenom = 'Le prénom est requis';
-    }
-
-    if (!formData.dateNaissance) {
-      newErrors.dateNaissance = 'La date de naissance est requise';
-    } else if (age < 15 || age > 25) {
-      newErrors.dateNaissance = 'L\'âge doit être compris entre 15 et 25 ans';
-    }
-
-    setErrors(newErrors);
-
-    return Object.keys(newErrors).length === 0;
+    setErrors('');
+    return true;
   };
 
   const handleChange = (e) => {
@@ -95,16 +78,16 @@ const SignUp = () => {
         window.location.href = "http://localhost:3000/signin";
       } catch (error) {
         console.error('Error submitting form:', error);
-        setErrors({ form: 'Une erreur est survenue lors de l\'inscription' });
+        setErrors('Une erreur est survenue lors de l\'inscription');
       }
     }
   };
 
   const history = useHistory();
-  const routeChange = () =>{ 
+  const routeChange = () => { 
     let path = `/`;
     history.push(path);
-  }
+  };
 
   if (isLoggedIn) {
     return (
@@ -127,76 +110,70 @@ const SignUp = () => {
       <Navbar />
       <div className="content signup-container">
         <h1>Inscription</h1>
-          <form onSubmit={handleSubmit} className="signup-form">
-            <div className="input-container">
-              <input
-                type="text"
-                name="pseudo"
-                value={formData.pseudo}
-                onChange={handleChange}
-                placeholder="Pseudonyme"
-              />
-              <label>Pseudonyme</label>
-              {errors.pseudo && <p className="error">{errors.pseudo}</p>}
-            </div>
-            <div className="input-container">
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="Email"
-              />
-              <label>Email</label>
-              {errors.email && <p className="error">{errors.email}</p>}
-            </div>
-            <div className="input-container">
-              <input
-                type="password"
-                name="motDePasse"
-                value={formData.motDePasse}
-                onChange={handleChange}
-                placeholder="Mot de passe"
-              />
-              <label>Mot de passe</label>
-              {errors.motDePasse && <p className="error">{errors.motDePasse}</p>}
-            </div>
-            <div className="input-container">
-              <input
-                type="text"
-                name="nom"
-                value={formData.nom}
-                onChange={handleChange}
-                placeholder="Nom"
-              />
-              <label>Nom</label>
-              {errors.nom && <p className="error">{errors.nom}</p>}
-            </div>
-            <div className="input-container">
-              <input
-                type="text"
-                name="prenom"
-                value={formData.prenom}
-                onChange={handleChange}
-                placeholder="Prénom"
-              />
-              <label>Prénom</label>
-              {errors.prenom && <p className="error">{errors.prenom}</p>}
-            </div>
-            <div className="input-container">
-              <input
-                type="date"
-                name="dateNaissance"
-                value={formData.dateNaissance}
-                onChange={handleChange}
-                placeholder="Date de naissance"
-              />
-              <label>Date de naissance</label>
-              {errors.dateNaissance && <p className="error">{errors.dateNaissance}</p>}
-            </div>
-            <button type="submit" className="submit-button">S'inscrire</button>
-            {errors.form && <p className="error">{errors.form}</p>}
-          </form>
+        <form onSubmit={handleSubmit} className="signup-form">
+          <div className="input-container">
+            <input
+              type="text"
+              name="pseudo"
+              value={formData.pseudo}
+              onChange={handleChange}
+              placeholder="Pseudonyme"
+            />
+            <label>Pseudonyme</label>
+          </div>
+          <div className="input-container">
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="Email"
+            />
+            <label>Email</label>
+          </div>
+          <div className="input-container">
+            <input
+              type="password"
+              name="motDePasse"
+              value={formData.motDePasse}
+              onChange={handleChange}
+              placeholder="Mot de passe"
+            />
+            <label>Mot de passe</label>
+          </div>
+          <div className="input-container">
+            <input
+              type="text"
+              name="nom"
+              value={formData.nom}
+              onChange={handleChange}
+              placeholder="Nom"
+            />
+            <label>Nom</label>
+          </div>
+          <div className="input-container">
+            <input
+              type="text"
+              name="prenom"
+              value={formData.prenom}
+              onChange={handleChange}
+              placeholder="Prénom"
+            />
+            <label>Prénom</label>
+          </div>
+          <div className="input-container">
+            <input
+              type="date"
+              name="dateNaissance"
+              value={formData.dateNaissance}
+              onChange={handleChange}
+              placeholder="Date de naissance"
+            />
+            <label>Date de naissance</label>
+          </div>
+          {errors && <p className="error">{errors}</p>}
+          <button type="submit" className="submit-button">S'inscrire</button>
+        </form>
       </div>
       <Footer />
     </div>

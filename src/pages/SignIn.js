@@ -13,40 +13,33 @@ const SignIn = () => {
     email: '',
     password: '',
   });
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   useEffect(() => {
-    // Récupérer les utilisateurs lors du montage du composant
     axios.get('http://localhost:3001/api/users')
       .then(response => {
         setUsers(response.data);
       })
       .catch(error => console.error('Error fetching users:', error));
-      const pseudo = localStorage.getItem('pseudo');
-      if (pseudo) {
-        setIsLoggedIn(true);
-      } else {
-        setIsLoggedIn(false);
-      }
+    const pseudo = localStorage.getItem('pseudo');
+    if (pseudo) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
   }, []);
 
   const validateForm = () => {
-    const newErrors = {};
-
-    if (!formData.email) {
-      newErrors.email = "L'adresse e-mail est requise";
+    if (!formData.email || !formData.password) {
+      setErrors('Tous les champs doivent être remplis');
+      return false;
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "L'adresse e-mail n'est pas valide";
+      setErrors("L'adresse e-mail n'est pas valide");
+      return false;
     }
-
-    if (!formData.password) {
-      newErrors.password = 'Le mot de passe est requis';
-    }
-
-    setErrors(newErrors);
-
-    return Object.keys(newErrors).length === 0;
+    setErrors('');
+    return true;
   };
 
   const handleChange = (e) => {
@@ -75,13 +68,13 @@ const SignIn = () => {
         setIsSubmitted(true);
         window.location.href = "http://localhost:3000/";
       } else {
-        setErrors({ form: "Email ou mot de passe incorrect" });
+        setErrors("Email ou mot de passe incorrect");
       }
     }
   };
 
   const history = useHistory();
-  const routeChange = () =>{ 
+  const routeChange = () => { 
     let path = `/`;
     history.push(path);
   }
@@ -120,7 +113,6 @@ const SignIn = () => {
                 placeholder="Adresse e-mail"
               />
               <label>Email:</label>
-              {errors.email && <p className="error">{errors.email}</p>}
             </div>
             <div className="input-container">
               <input
@@ -131,9 +123,8 @@ const SignIn = () => {
                 placeholder="Mot de passe"
               />
               <label>Mot de passe:</label>
-              {errors.password && <p className="error">{errors.password}</p>}
             </div>
-            {errors.form && <p className="error">{errors.form}</p>}
+            {errors && <p className="error">{errors}</p>}
             <button type="submit" className="submit-button">Se connecter</button>
           </form>
         )}

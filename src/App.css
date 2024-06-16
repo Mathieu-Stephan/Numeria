@@ -419,30 +419,9 @@ Page défis
   color: #120a19; /* Couleur du texte lorsque le champ est actif ou rempli */
 }
 
-.error {
-  color: var(--accent-color-2); /* Texte en noir */
-  font-size: 0.875rem;
-  margin-top: 5px;
-}
-
-.submit-button {
-  background-color: var(--primary-color);
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 20px; /* Arrondir le bouton */
-  cursor: pointer;
-  font-family: 'Montserrat', sans-serif;
-  transition: background-color 0.3s ease-in-out;
-}
-
-.submit-button:hover {
-  background-color: var(--secondary-color);
-}
 
 /* Page SignIn et SignUp */
 /* Page SignIn et SignUp */
-
 .input-container {
   position: relative;
   margin-bottom: 20px;
@@ -481,9 +460,28 @@ Page défis
   font-size: 0.8rem;
 }
 
-.input-container.error input {
-  border-color: var(--accent-color-2);
+.error {
+  color: var(--accent-color-2);
+  font-size: 0.875rem;
+  margin-top: 5px;
+  text-align: center; /* Centrer le message d'erreur */
 }
+
+.submit-button {
+  background-color: var(--primary-color);
+  color: black;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.submit-button:hover {
+  background-color: var(--secondary-color);
+}
+
 
 
 
@@ -694,4 +692,8 @@ Page défis
 
 .password-change-section button:hover {
   background-color: var(--secondary-color);
+}
+
+.annuler-btn {
+  margin-top: 10px;
 }
