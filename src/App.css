@@ -60,6 +60,7 @@ a {
 }
 
 .content{
+  padding-top: 100px;
   margin-left: 10%;
   margin-right: 10%;
   margin-bottom: 5%;
@@ -81,7 +82,7 @@ h1{
 
 /** pour la navbar */
 .navbar {
-  position: sticky;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -144,6 +145,7 @@ h1{
   justify-content: space-between;
   max-width: 1000px;
   margin: auto;
+  padding-top: 100px;
 }
 
 .footer-links {
@@ -402,6 +404,10 @@ h1{
 }
 
 /* Page SignIn et SignUp */
+.signup-container {
+  padding-top: 100px;
+}
+
 .input-container {
   position: relative;
   margin-bottom: 20px;
@@ -463,12 +469,12 @@ h1{
 }
 
 .myaccount-container {
+  padding-top: 100px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 20px;
 }
 
 .profile-section {
