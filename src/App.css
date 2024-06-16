@@ -369,7 +369,7 @@ Page défis
 }
 
 .star {
-  color: gold;
+  color: var(--accent-color-1);
 }
 
 .defi-square {
@@ -426,7 +426,7 @@ Page défis
 }
 
 .submit-button {
-  background-color: #7DCFB6; /* Vert */
+  background-color: var(--primary-color);
   color: white;
   padding: 10px 20px;
   border: none;
@@ -437,7 +437,7 @@ Page défis
 }
 
 .submit-button:hover {
-  background-color: #ff76ac; /* Rose */
+  background-color: var(--secondary-color);
 }
 
 /* Page SignIn et SignUp */
@@ -585,16 +585,18 @@ Page défis
 .admin-button {
   display: inline-block;
   padding: 10px 20px;
-  background-color: #7DCFB6;
+  background-color: var(--primary-color);
   color: white;
   text-decoration: none;
   border-radius: 5px;
   font-size: 16px;
   transition: background-color 0.3s;
+  cursor: pointer;
+  border: none;
 }
 
 .admin-button:hover {
-  background-color: #ff76ac;
+  background-color: var(--secondary-color);
 }
 
 .icon {

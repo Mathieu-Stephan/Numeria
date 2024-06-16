@@ -13,6 +13,7 @@ const MyAccount = () => {
   const [user, setUser] = useState(null);
   const [editProfile, setEditProfile] = useState(false);
   const [editPassword, setEditPassword] = useState(false);
+  const [showValidateButton, setShowValidateButton] = useState(false); // New state
   const [form, setForm] = useState({
     pseudo: '',
     nom: '',
@@ -85,6 +86,7 @@ const MyAccount = () => {
           const reader = new FileReader();
           reader.onloadend = () => {
             setForm({ ...form, photo: reader.result });
+            setShowValidateButton(true); // Show validate button
           };
           reader.readAsDataURL(result);
         },
@@ -109,6 +111,7 @@ const MyAccount = () => {
       .then(data => {
         setUser(data);
         setEditProfile(false);
+        setShowValidateButton(false); // Hide validate button
         //refresh the page
         history.go(0);
       })
@@ -181,6 +184,9 @@ const MyAccount = () => {
             style={{ display: 'none' }}
             onChange={handleImageChange}
           />
+          {showValidateButton && (
+            <button className='admin-button' onClick={handleProfileSubmit}>Valider</button>
+          )}
           <h2 className="user-name">{user?.nom} {user?.prenom}</h2>
         </div>
         <div className="user-info">
@@ -276,7 +282,6 @@ const MyAccount = () => {
 };
 
 export default MyAccount;
-
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);
