@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import './Admin.css';
 
 const StatSection = () => {
   const [stats, setStats] = useState([]);
@@ -49,20 +50,28 @@ const StatSection = () => {
   };
 
   return (
-    <div>
+    <div className="admin-stat-section">
       <h2>Stats</h2>
-      <form onSubmit={handleSubmit}>
-        <input type="text" name="unUser" value={form.unUser} onChange={handleInputChange} placeholder="User Pseudo" required />
-        <input type="number" name="nbDefis" value={form.nbDefis} onChange={handleInputChange} placeholder="Nombre de Défis" required />
-        <input type="number" name="nbEtoiles" value={form.nbEtoiles} onChange={handleInputChange} placeholder="Nombre d'Étoiles" required />
-        <input type="number" name="nufs" value={form.nufs} onChange={handleInputChange} placeholder="Nufs" required />
-        <button type="submit">Ajouter</button>
+      <form onSubmit={handleSubmit} className="admin-stat-form">
+        <div className="admin-input-container">
+          <input type="text" name="unUser" value={form.unUser} onChange={handleInputChange} placeholder="User Pseudo" required />
+        </div>
+        <div className="admin-input-container">
+          <input type="number" name="nbDefis" value={form.nbDefis} onChange={handleInputChange} placeholder="Nombre de Défis" required />
+        </div>
+        <div className="admin-input-container">
+          <input type="number" name="nbEtoiles" value={form.nbEtoiles} onChange={handleInputChange} placeholder="Nombre d'Étoiles" required />
+        </div>
+        <div className="admin-input-container">
+          <input type="number" name="nufs" value={form.nufs} onChange={handleInputChange} placeholder="Nufs" required />
+        </div>
+        <button type="submit" className="submit-button">Ajouter</button>
       </form>
-      <ul>
+      <ul className="list">
         {stats.map(stat => (
-          <li key={stat.unUser}>
+          <li key={stat.unUser} className="item">
             {stat.unUser} - {stat.nbDefis} défis - {stat.nbEtoiles} étoiles - {stat.nufs} nufs
-            <button onClick={() => handleDelete(stat.unUser)}>Supprimer</button>
+            <button onClick={() => handleDelete(stat.unUser)} className="delete-button">Supprimer</button>
           </li>
         ))}
       </ul>

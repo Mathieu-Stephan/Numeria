@@ -13,6 +13,7 @@ const MyAccount = () => {
   const [user, setUser] = useState(null);
   const [editProfile, setEditProfile] = useState(false);
   const [editPassword, setEditPassword] = useState(false);
+  const [showValidateButton, setShowValidateButton] = useState(false); // New state
   const [form, setForm] = useState({
     pseudo: '',
     nom: '',
@@ -85,6 +86,7 @@ const MyAccount = () => {
           const reader = new FileReader();
           reader.onloadend = () => {
             setForm({ ...form, photo: reader.result });
+            setShowValidateButton(true); // Show validate button
           };
           reader.readAsDataURL(result);
         },
@@ -109,6 +111,7 @@ const MyAccount = () => {
       .then(data => {
         setUser(data);
         setEditProfile(false);
+        setShowValidateButton(false); // Hide validate button
         //refresh the page
         history.go(0);
       })
@@ -170,7 +173,7 @@ const MyAccount = () => {
       <div className="content myaccount-container">
         <div className="profile-section">
           <img
-            src={form.photo || ''}
+            src={form.photo || '/public/Logo_A.png'}
             alt="Profil"
             className="profile-picture"
             onClick={() => document.getElementById('fileInput').click()}
@@ -181,10 +184,13 @@ const MyAccount = () => {
             style={{ display: 'none' }}
             onChange={handleImageChange}
           />
+          {showValidateButton && (
+            <button className='admin-button' onClick={handleProfileSubmit}>Valider</button>
+          )}
           <h2 className="user-name">{user?.nom} {user?.prenom}</h2>
         </div>
         <div className="user-info">
-          <p>Défis réussis : {user?.nbDefis || 0}</p>
+          <p>Défis réussis : {user?.nbDefis || 0} </p>
           <p>Étoiles : {user?.nbEtoiles || 0}</p>
         </div>
         {isAdmin ? (
@@ -225,7 +231,7 @@ const MyAccount = () => {
                 required
               />
               <button type="submit">Sauvegarder</button>
-              <button type="button" onClick={() => setEditProfile(false)}>Annuler</button>
+              <button class="annuler-btn" type="button" onClick={() => setEditProfile(false)}>Annuler</button>
             </form>
           ) : (
             <button onClick={() => setEditProfile(true)}>Modifier le profil</button>
@@ -262,7 +268,7 @@ const MyAccount = () => {
                 required
               />
               <button type="submit">Changer le mot de passe</button>
-              <button type="button" onClick={() => setEditPassword(false)}>Annuler</button>
+              <button class="annuler-btn" type="button" onClick={() => setEditPassword(false)}>Annuler</button>
             </form>
           ) : (
             <button onClick={() => setEditPassword(true)}>Changer le mot de passe</button>
@@ -276,7 +282,6 @@ const MyAccount = () => {
 };
 
 export default MyAccount;
-
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);

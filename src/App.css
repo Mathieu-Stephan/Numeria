@@ -369,7 +369,7 @@ Page défis
 }
 
 .star {
-  color: gold;
+  color: var(--accent-color-1);
 }
 
 .defi-square {
@@ -419,30 +419,9 @@ Page défis
   color: #120a19; /* Couleur du texte lorsque le champ est actif ou rempli */
 }
 
-.error {
-  color: var(--accent-color-2); /* Texte en noir */
-  font-size: 0.875rem;
-  margin-top: 5px;
-}
-
-.submit-button {
-  background-color: #7DCFB6; /* Vert */
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 20px; /* Arrondir le bouton */
-  cursor: pointer;
-  font-family: 'Montserrat', sans-serif;
-  transition: background-color 0.3s ease-in-out;
-}
-
-.submit-button:hover {
-  background-color: #ff76ac; /* Rose */
-}
 
 /* Page SignIn et SignUp */
 /* Page SignIn et SignUp */
-
 .input-container {
   position: relative;
   margin-bottom: 20px;
@@ -481,9 +460,28 @@ Page défis
   font-size: 0.8rem;
 }
 
-.input-container.error input {
-  border-color: var(--accent-color-2);
+.error {
+  color: var(--accent-color-2);
+  font-size: 0.875rem;
+  margin-top: 5px;
+  text-align: center; /* Centrer le message d'erreur */
 }
+
+.submit-button {
+  background-color: var(--primary-color);
+  color: black;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.submit-button:hover {
+  background-color: var(--secondary-color);
+}
+
 
 
 
@@ -511,6 +509,7 @@ Page défis
   border-radius: 50%;
   border: 2px solid var(--primary-color);
   margin-bottom: 10px;
+  cursor: pointer;
 }
 
 .user-name {
@@ -523,6 +522,10 @@ Page défis
   font-family: open-sans, sans-serif;
   font-size: 1.2rem;
   color: var(--text-color);
+}
+
+.user-info p {
+  margin-top: 1px;
 }
 
 
@@ -548,7 +551,7 @@ Page défis
   border: none;
   border-radius: 20px;
   background-color: var(--primary-color);
-  color: white;
+  color: black;
   cursor: pointer;
   font-family: 'Montserrat', sans-serif;
   transition: background-color 0.3s ease-in-out;
@@ -585,16 +588,18 @@ Page défis
 .admin-button {
   display: inline-block;
   padding: 10px 20px;
-  background-color: #7DCFB6;
-  color: white;
+  background-color: var(--secondary-color);
+  color: black;
   text-decoration: none;
-  border-radius: 5px;
+  border-radius: 20px;
   font-size: 16px;
   transition: background-color 0.3s;
+  cursor: pointer;
+  border: none;
 }
 
 .admin-button:hover {
-  background-color: #ff76ac;
+  background-color: var(--primary-color);
 }
 
 .icon {
@@ -615,6 +620,7 @@ Page défis
   font-size: 1.5rem;
   margin-bottom: 10px;
   color: var(--text-color);
+  margin-top: 1px;
 }
 
 .profile-edit-section form {
@@ -637,7 +643,7 @@ Page défis
   border: none;
   border-radius: 20px;
   background-color: var(--primary-color);
-  color: #fff;
+  color: #000;
   font-family: 'Montserrat', sans-serif;
   cursor: pointer;
   transition: background-color 0.3s ease-in-out;
@@ -662,6 +668,7 @@ Page défis
   font-size: 1.5rem;
   margin-bottom: 10px;
   color: var(--text-color);
+  margin-top: 1px;
 }
 
 .password-change-section form {
@@ -684,7 +691,7 @@ Page défis
   border: none;
   border-radius: 20px;
   background-color: var(--primary-color);
-  color: #fff;
+  color: #000;
   font-family: 'Montserrat', sans-serif;
   cursor: pointer;
   transition: background-color 0.3s ease-in-out;
@@ -692,4 +699,8 @@ Page défis
 
 .password-change-section button:hover {
   background-color: var(--secondary-color);
+}
+
+.annuler-btn {
+  margin-top: 10px;
 }

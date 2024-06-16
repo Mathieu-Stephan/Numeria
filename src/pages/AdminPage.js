@@ -49,11 +49,13 @@ const AdminPage = () => {
   return (
     <div className="admin-page">
         <Navbar />
+            <center>
             <h1>Admin Page</h1>
             <UserSection />
             <StatSection />
             <DefiSection />
             <DefiUserSection />
+            </center>
         <Footer />
     </div>
   );

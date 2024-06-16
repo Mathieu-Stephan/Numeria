@@ -36,13 +36,13 @@
 }
 
 .start-button:hover {
-  background-color: #F88DAD; /* Rose */
+  background-color: #ff76ac; /* Rose */
 }
 
 .stop-button {
   margin-top: 20px;
   padding: 10px 20px;
-  background-color: #F88DAD; /* Vert */
+  background-color: #ff76ac; /* Vert */
   color: white;
   border: none;
   border-radius: 20px;
@@ -86,11 +86,11 @@
 }
 
 .objectifs {
-  background-color: #FFD9EC; /* Rose clair */
+  background-color: #ff76ac; /* Rose clair */
 }
 
 .criteres {
-  background-color: #C8E6C9; /* Vert clair */
+  background-color: #7DCFB6; /* Vert clair */
 }
 
 .objectifs ul, .criteres ul {

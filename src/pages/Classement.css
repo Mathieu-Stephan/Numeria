@@ -1,23 +1,33 @@
 .select-container {
-    margin: 20px 0;
-    text-align: center;
-  }
-  
-  .select-container select {
-    padding: 10px;
-    font-size: 16px;
-  }
-  
-  .ranking-container ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .ranking-container li {
-    margin: 10px 0;
-    padding: 10px;
-    background-color: #f0f0f0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
+  margin: 20px 0;
+  text-align: center;
+}
+
+.select-container select {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 20px; /* Arrondir les coins */
+  border: 1px solid #ccc;
+}
+
+.ranking-container ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.ranking-container li {
+  margin: 10px 0;
+  padding: 10px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 20px; /* Arrondir les coins */
+}
+
+/* Colorer le premier élément en vert et les autres en rose */
+.ranking-container li:first-child {
+  background-color: #7DCFB6;
+}
+
+.ranking-container li:not(:first-child) {
+  background-color: #ff76ac;
+}

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import './Admin.css'; 
 
 const DefiSection = () => {
   const [defis, setDefis] = useState([]);
@@ -6,8 +7,7 @@ const DefiSection = () => {
     titre: '',
     description: '',
     nbEtoiles: 0,
-    categorie: '',
-    indice: '',
+    difficulte: '', // Corrected the form key
   });
 
   useEffect(() => {
@@ -49,20 +49,23 @@ const DefiSection = () => {
   };
 
   return (
-    <div>
-      <h2>Defis</h2>
-      <form onSubmit={handleSubmit}>
+    <div className="admin-defis-container">
+      <h2>Défis</h2>
+      <form onSubmit={handleSubmit} className="admin-input-container">
         <input type="text" name="titre" value={form.titre} onChange={handleInputChange} placeholder="Titre" required />
         <input type="text" name="description" value={form.description} onChange={handleInputChange} placeholder="Description" required />
         <input type="number" name="nbEtoiles" value={form.nbEtoiles} onChange={handleInputChange} placeholder="Nombre d'Étoiles" required />
-        <input type="text" name="difficulte" value={form.difficulté} onChange={handleInputChange} placeholder="Difficulté" required />
-        <button type="submit">Ajouter</button>
+        <input type="text" name="difficulte" value={form.difficulte} onChange={handleInputChange} placeholder="Difficulté" required />
+        <button type="submit" className="submit-button">Ajouter</button>
       </form>
-      <ul>
+      <ul className="list">
         {defis.map(defi => (
-          <li key={defi.idDefi}>
-            {defi.titre} - {defi.description} - {defi.nbEtoiles} étoiles - {defi.difficulté}
-            <button onClick={() => handleDelete(defi.idDefi)}>Supprimer</button>
+          <li key={defi.idDefi} className="card">
+            <h3>{defi.titre}</h3>
+            <p>{defi.description}</p>
+            <p>{defi.nbEtoiles} étoiles</p>
+            <p>Difficulté: {defi.difficulte}</p>
+            <button onClick={() => handleDelete(defi.idDefi)} className="delete-button">Supprimer</button>
           </li>
         ))}
       </ul>

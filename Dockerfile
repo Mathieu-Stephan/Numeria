@@ -29,4 +29,4 @@ RUN npm install
 
 EXPOSE 3000 3001
 
-ENTRYPOINT ["/app/entrypoint.sh"]
+CMD ["sh", "-c", "npm start & node server.js"]

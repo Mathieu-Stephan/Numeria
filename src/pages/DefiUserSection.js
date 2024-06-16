@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import './Admin.css'; 
 
 const DefiUserSection = () => {
   const [defiUsers, setDefiUsers] = useState([]);
@@ -7,7 +8,7 @@ const DefiUserSection = () => {
     unDefi: 0,
     dateDebut: '',
     dateFin: '',
-    nbEtoilesObtenu: 0,
+    nbEtoiles: 0,
   });
 
   useEffect(() => {
@@ -49,21 +50,24 @@ const DefiUserSection = () => {
   };
 
   return (
-    <div>
+    <div className="admin-defis-container">
       <h2>Defi Users</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="admin-input-container">
         <input type="text" name="unUser" value={form.unUser} onChange={handleInputChange} placeholder="User Pseudo" required />
         <input type="number" name="unDefi" value={form.unDefi} onChange={handleInputChange} placeholder="Defi ID" required />
         <input type="date" name="dateDebut" value={form.dateDebut} onChange={handleInputChange} required />
         <input type="date" name="dateFin" value={form.dateFin} onChange={handleInputChange} required />
         <input type="number" name="nbEtoiles" value={form.nbEtoiles} onChange={handleInputChange} placeholder="Étoiles" required />
-        <button type="submit">Ajouter</button>
+        <button type="submit" className="submit-button">Ajouter</button>
       </form>
-      <ul>
+      <ul className="list">
         {defiUsers.map(du => (
-          <li key={`${du.unUser}-${du.unDefi}`}>
-            {du.unUser} - Défi {du.unDefi} - {du.dateDebut} à {du.dateFin} - {du.nbEtoiles} étoiles
-            <button onClick={() => handleDelete(du.unUser, du.unDefi)}>Supprimer</button>
+          <li key={`${du.unUser}-${du.unDefi}`} className="card">
+            <h3>{du.unUser}</h3>
+            <p>Défi {du.unDefi}</p>
+            <p>Du {du.dateDebut} au {du.dateFin}</p>
+            <p>{du.nbEtoiles} étoiles</p>
+            <button onClick={() => handleDelete(du.unUser, du.unDefi)} className="delete-button">Supprimer</button>
           </li>
         ))}
       </ul>
