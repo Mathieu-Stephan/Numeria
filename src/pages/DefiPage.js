@@ -60,6 +60,13 @@ const DefiPage = () => {
     
   };
 
+  const handleStopDefi = async () => {
+
+    localStorage.removeItem("defi");
+    window.location.replace(`http://localhost:3000/defis/${id}`);
+    
+  };
+
   if (!defi) {
     return (
       <div className="container">
@@ -107,7 +114,7 @@ const DefiPage = () => {
               !hasDefi ? (
                 <button className="start-button" onClick={handleStartDefi}>Commencer le défi</button>
               ) : (
-                <button className="stop-button">Arrêter le défi</button>
+                <button className="stop-button" onClick={handleStopDefi}>Arrêter le défi</button>
               )
             )}
           </div>
