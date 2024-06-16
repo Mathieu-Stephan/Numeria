@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import './Admin.css';
 
 const UserSection = () => {
   const [users, setUsers] = useState([]);
@@ -53,9 +54,9 @@ const UserSection = () => {
   };
 
   return (
-    <div>
+    <div className="users-container">
       <h2>Users</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="input-container">
         <input type="text" name="pseudo" value={form.pseudo} onChange={handleInputChange} placeholder="Pseudo" required />
         <input type="email" name="email" value={form.email} onChange={handleInputChange} placeholder="Email" required />
         <input type="password" name="motDePasse" value={form.motDePasse} onChange={handleInputChange} placeholder="Mot de passe" required />
@@ -68,13 +69,15 @@ const UserSection = () => {
           Est Admin:
           <input type="checkbox" name="estAdmin" checked={form.estAdmin} onChange={e => setForm({ ...form, estAdmin: e.target.checked })} />
         </label>
-        <button type="submit">Ajouter</button>
+        <button type="submit" className="submit-button">Ajouter</button>
       </form>
-      <ul>
+      <ul className="list">
         {users.map(user => (
-          <li key={user.pseudo}>
-            {user.pseudo} ({user.nom} {user.prenom}) - {user.email}
-            <button onClick={() => handleDelete(user.pseudo)}>Supprimer</button>
+          <li key={user.pseudo} className="card">
+            <h3>{user.pseudo}</h3>
+            <p>{user.nom} {user.prenom}</p>
+            <p>{user.email}</p>
+            <button onClick={() => handleDelete(user.pseudo)} className="delete-button">Supprimer</button>
           </li>
         ))}
       </ul>
