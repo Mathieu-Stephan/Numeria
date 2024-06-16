@@ -173,7 +173,7 @@ const MyAccount = () => {
       <div className="content myaccount-container">
         <div className="profile-section">
           <img
-            src={form.photo || ''}
+            src={form.photo || '/public/Logo_A.png'}
             alt="Profil"
             className="profile-picture"
             onClick={() => document.getElementById('fileInput').click()}
@@ -190,7 +190,7 @@ const MyAccount = () => {
           <h2 className="user-name">{user?.nom} {user?.prenom}</h2>
         </div>
         <div className="user-info">
-          <p>Défis réussis : {user?.nbDefis || 0}</p>
+          <p>Défis réussis : {user?.nbDefis || 0} </p>
           <p>Étoiles : {user?.nbEtoiles || 0}</p>
         </div>
         {isAdmin ? (

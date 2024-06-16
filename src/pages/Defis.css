@@ -4,12 +4,12 @@
 }
 
 .defis-container {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 2vh 2vw;
+  display: flex;
+  flex-wrap: wrap;
   justify-content: center;
-  margin: 0 auto;
+  gap: 20px;
   max-width: 800px;
+  margin: 0 auto;
   padding: 20px;
 }
 
