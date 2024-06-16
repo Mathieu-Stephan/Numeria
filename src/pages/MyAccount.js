@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import Navbar from './NavBar';
-import Footer from './Footer';
+import Navbar from '../components/NavBar';
+import Footer from '../components/Footer';
 import { Link } from 'react-router-dom';
 import Compressor from 'compressorjs';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import Navbar from './NavBar';
-import Footer from './Footer';
+import Navbar from '../components/NavBar';
+import Footer from '../components/Footer';
 import '../styles/Classement.css';
 
 const Classement = () => {

@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import {useHistory} from "react-router-dom";
-import UserSection from './UserSection';
-import StatSection from './StatSection';
-import DefiSection from './DefiSection';
-import DefiUserSection from './DefiUserSection';
-import Navbar from './NavBar';
-import Footer from './Footer';
+import UserSection from '../components/UserSection';
+import StatSection from '../components/StatSection';
+import DefiSection from '../components/DefiSection';
+import DefiUserSection from '../components/DefiUserSection';
+import Navbar from '../components/NavBar';
+import Footer from '../components/Footer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBan } from '@fortawesome/free-solid-svg-icons';
 
