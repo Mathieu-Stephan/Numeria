@@ -1,0 +1,80 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #333333; /* Couleur de fond sombre */
+  color: #ffffff; /* Texte en blanc */
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+}
+
+textarea {
+  width: 100%;
+  margin-top: 20px;
+  background-color: #444444; /* Couleur de fond sombre pour la zone de texte */
+  color: #7DCFB6; /* Texte en vert */
+  border: 1px solid #7DCFB6; /* Bordure verte */
+  padding: 10px;
+  border-radius: 4px;
+}
+
+.button-container {
+  margin-top: 20px;
+}
+
+.directory-container {
+  margin-top: 20px;
+}
+
+.file-container {
+  margin-top: 20px;
+  text-align: left;
+}
+
+button {
+  background-color: #7DCFB6; /* Bouton vert */
+  color: #ffffff; /* Texte en blanc */
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+  margin: 0 10px; /* Espace entre les boutons */
+}
+
+.uploadDirectoryButton {
+  background-color: #ff76ac;
+}
+
+button:hover {
+  background-color: #66BFA6; /* Couleur du bouton au survol */
+}
+
+pre {
+  text-align: left;
+  background-color: #444444; /* Fond sombre pour la sortie */
+  color: #ffffff; /* Texte en blanc */
+  padding: 10px;
+  border: 1px solid #7DCFB6; /* Bordure verte */
+  border-radius: 4px;
+  margin-top: 20px;
+  white-space: pre-wrap; /* Permet d'ajuster le contenu du pré à la largeur de l'élément */
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  background-color: #555555;
+  margin: 5px 0;
+  padding: 10px;
+  border-radius: 4px;
+}

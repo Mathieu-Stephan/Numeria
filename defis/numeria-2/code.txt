@@ -1,0 +1,41 @@
+function detectWord(word, path, subdir, print) {
+    const fs = require('fs');
+    const pathModule = require('path');
+
+    const results = [];
+    const warnings = [];
+
+    const readFiles = (dir, subdir) => {
+        try {
+            const files = fs.readdirSync(dir);
+            files.forEach(file => {
+                const filePath = pathModule.join(dir, file);
+                if (fs.lstatSync(filePath).isDirectory() && subdir) {
+                    readFiles(filePath, subdir);
+                } else {
+                    try {
+                        const content = fs.readFileSync(filePath, 'utf8');
+                        if (content.includes(word)) {
+                            results.push(filePath);
+                        }
+                    } catch (err) {
+                        warnings.push(`Cannot read file ${filePath}: ${err.message}`);
+                    }
+                }
+            });
+        } catch (err) {
+            warnings.push(`Cannot read directory ${dir}: ${err.message}`);
+        }
+    };
+
+    readFiles(path, subdir);
+
+    if (print) {
+        console.log('Files containing the word:', results);
+        console.log('Warnings:', warnings);
+    }
+
+    return [results, warnings];
+}
+
+detectWord("abracadabra", "/app/user-repo/", false, true);

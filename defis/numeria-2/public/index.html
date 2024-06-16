@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Défi - Recherche de mots</title>
+  <link rel="stylesheet" href="style.css">
+  <script>
+    if(!localStorage.getItem("pseudo") || !localStorage.getItem("defi") || localStorage.getItem("defi") != 2) {
+      window.location.replace("http://localhost:3012/redirect");
+    }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h1>Défi - Recherche de mots</h1>
+    <h4>Chemin de votre repertoire importé : '/app/user-repo/'</h4>
+    <textarea id="codeInput" rows="10" cols="80">
+// Écrivez votre code ici
+function detectWord(word, path, subdir, print) {
+    // TODO: Implémenter la logique de recherche de mots ici
+    // return [listFiles, listWarns];
+}
+    </textarea>
+    <br>
+    <div class="button-container">
+      <button id="execButton">Éxécuter</button>
+      <button id="verifyButton">Vérifier</button>
+    </div>
+    <div class="directory-container">
+      <input type="file" id="directoryInput" webkitdirectory directory multiple>
+      <button class="uploadDirectoryButton" id="uploadDirectoryButton">Télécharger le répertoire</button>
+    </div>
+    <div id="fileListContainer">
+      <h2>Fichiers du répertoire sélectionné :</h2>
+      <ul id="fileList"></ul>
+    </div>
+    <pre id="output"></pre>
+  </div>
+  <script>
+    document.getElementById('execButton').addEventListener('click', async () => {
+      const code = document.getElementById('codeInput').value.trim();
+      const response = await fetch('/execute', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ code })
+      });
+      const result = await response.json();
+      document.getElementById('output').textContent = result.output;
+    });
+
+    document.getElementById('verifyButton').addEventListener('click', async () => {
+      const code = document.getElementById('codeInput').value.trim();
+      const response = await fetch('/verify', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ code })
+      });
+      const result = await response.json();
+      document.getElementById('output').textContent = result.output;
+    });
+
+    document.getElementById('uploadDirectoryButton').addEventListener('click', async () => {
+      const files = document.getElementById('directoryInput').files;
+      const formData = new FormData();
+      for (let i = 0; i < files.length; i++) {
+        formData.append('files', files[i]);
+        formData.append('relativePaths', files[i].webkitRelativePath); // Ajout du chemin relatif dans un tableau
+      }
+      const response = await fetch('/upload-directory', {
+        method: 'POST',
+        body: formData
+      });
+      if (response.ok) {
+        alert('Répertoire téléchargé avec succès');
+        displayFileList(files);
+      } else {
+        alert('Erreur lors du téléchargement du répertoire');
+      }
+    });
+
+    function displayFileList(files) {
+      const fileListContainer = document.getElementById('fileList');
+      fileListContainer.innerHTML = '';
+      for (let i = 0; i < files.length; i++) {
+        const li = document.createElement('li');
+        li.textContent = files[i].webkitRelativePath;
+        fileListContainer.appendChild(li);
+      }
+    }
+  </script>
+</body>
+</html>
