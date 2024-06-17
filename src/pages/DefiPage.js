@@ -16,6 +16,10 @@ const DefiPage = () => {
   const history = useHistory();
 
   useEffect(() => {
+
+    if (localStorage.getItem('defi')) {
+      localStorage.removeItem('defi');
+    }
     // Fonction pour récupérer les détails du défi
     const fetchDefi = async () => {
       try {
@@ -56,8 +60,20 @@ const DefiPage = () => {
   const handleStartDefi = async () => {
 
     localStorage.setItem("defi", id);
+    const date = formatDate(new Date());
+    try {
+      await axios.post('http://localhost:3001/api/defiUsers2', {
+        unUser : localStorage.getItem("pseudo"),
+        unDefi : parseInt(id),
+        dateDebutD : date[0],
+        dateDebutH : date[1],
+        dateFin :  null,
+        nbEtoiles : 0 
+      });
+    } catch (error) {
+      console.error(error);
+    }
     window.location.replace(`http://localhost:301${id}/defi/${id}/${pseudo}`);
-    
   };
 
   const handleStopDefi = async () => {
@@ -126,3 +142,13 @@ const DefiPage = () => {
 };
 
 export default DefiPage;
+
+const formatDate = (date) => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, '0');;
+  const minutes = String(date.getMinutes()).padStart(2, '0');;
+  const secondes = String(date.getSeconds()).padStart(2, '0');;
+  return [`${year}-${month}-${day}`, `${hours}:${minutes}:${secondes}`];
+};

@@ -53,7 +53,9 @@ function detectWord(word, path, subdir, print) {
 
     document.getElementById('verifyButton').addEventListener('click', async () => {
       const code = document.getElementById('codeInput').value.trim();
-      const response = await fetch('/verify', {
+      const pseudo = localStorage.getItem('pseudo');
+      const defi = localStorage.getItem('defi');
+      const response = await fetch(`/verify/${pseudo}/${defi}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -61,7 +63,11 @@ function detectWord(word, path, subdir, print) {
         body: JSON.stringify({ code })
       });
       const result = await response.json();
-      document.getElementById('output').textContent = result.output;
+      if (result.redirectUrl) {
+        window.location.replace(result.redirectUrl);
+      } else {
+        document.getElementById('output').textContent = result.output;
+      }
     });
 
     document.getElementById('uploadDirectoryButton').addEventListener('click', async () => {

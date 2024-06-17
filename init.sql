@@ -26,6 +26,7 @@ CREATE TABLE Stat (
     FOREIGN KEY (unUser) REFERENCES User(pseudo)
 );
 
+-- Creation de la table Defi avec contrainte de type TEXT
 CREATE TABLE Defi (
     idDefi INT NOT NULL AUTO_INCREMENT,
     titre VARCHAR(255) NOT NULL,
@@ -44,6 +45,7 @@ CREATE TABLE Defi (
     PRIMARY KEY (idDefi),
     CONSTRAINT chk_difficulte CHECK (difficulte IN ('Facile', 'Intermediaire', 'Difficile'))
 );
+
 
 CREATE TABLE DefiUser (
     unUser VARCHAR(15) NOT NULL,
@@ -98,7 +100,7 @@ BEGIN
         UPDATE Stat
         SET nbDefis = nbDefis + 1,
             nbEtoiles = nbEtoiles + NEW.nbEtoiles,
-            nufs = nufs + calcul_nufs(NEW.unDefi)
+            nufs = nufs + calcul_nufs(NEW.unDefi, NEW.unUser)
         WHERE unUser = NEW.unUser;
     END IF;
 END$$
@@ -114,7 +116,7 @@ BEGIN
         UPDATE Stat
         SET nbDefis = nbDefis + 1,
             nbEtoiles = nbEtoiles + NEW.nbEtoiles,
-            nufs = nufs + calcul_nufs(NEW.unDefi)
+            nufs = nufs + calcul_nufs(NEW.unDefi, NEW.unUser)
         WHERE unUser = NEW.unUser;
     END IF;
 END$$
@@ -123,14 +125,14 @@ DELIMITER ;
 -- Trigger to update the stats when a DefiUser is delete with dateFin not null
 DELIMITER $$
 CREATE TRIGGER after_defiuser_delete
-AFTER DELETE ON DefiUser
+BEFORE DELETE ON DefiUser
 FOR EACH ROW
 BEGIN
   IF OLD.dateFin IS NOT NULL THEN
         UPDATE Stat
         SET nbDefis = nbDefis - 1,
             nbEtoiles = nbEtoiles - OLD.nbEtoiles,
-            nufs = nufs - calcul_nufs(OLD.unDefi)
+            nufs = nufs - calcul_nufs(OLD.unDefi, OLD.unUser)
         WHERE unUser = OLD.unUser;
     END IF;
 END$$
@@ -138,7 +140,7 @@ DELIMITER ;
 
 -- Function to calculate nufs
 DELIMITER $$
-CREATE FUNCTION calcul_nufs(leDefi INT)
+CREATE FUNCTION calcul_nufs(leDefi INT, lUser VARCHAR(50))
 RETURNS INT
 DETERMINISTIC
 BEGIN
@@ -156,7 +158,8 @@ BEGIN
 
     SELECT DU.nbEtoiles * diff_coeff INTO nufs
     FROM DefiUser DU
-    WHERE DU.unDefi = leDefi;
+    WHERE DU.unDefi = leDefi
+    AND DU.unUser = lUser;
 
     RETURN nufs;
 END$$

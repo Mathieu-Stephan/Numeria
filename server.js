@@ -12,6 +12,7 @@ app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 var corsOptions = {
   origin: '*',
   optionsSuccessStatus: 200
+
 }
 
 app.use(cors(corsOptions));
@@ -27,6 +28,7 @@ const connection = mysql.createConnection({
   insecureAuth: true
 });
 
+
 setTimeout(() => {
   connection.connect(function(err) {
     if (err) {
@@ -40,7 +42,8 @@ setTimeout(() => {
       console.log(`Le serveur écoute sur le port ${port}`);
     });
   });
-}, 10000);
+}, 10000); // Attendre 10 secondes
+
 
 //Points d'entrée de l'API
 app.get('/api/defis', (req, res) => {
@@ -70,7 +73,7 @@ app.get('/api/classement/:id', (req, res) => {
         res.json(results);
       });
     } else {
-      connection.query('SELECT DU.unUser, DU.nbEtoiles, calcul_nufs(DU.unDefi) AS nufs, TIMESTAMPDIFF(MINUTE, DU.dateDebut, DU.dateFin) AS temps FROM Defiuser AS DU INNER JOIN Defi AS D ON D.idDefi = DU.unDefi WHERE D.titre = ? GROUP BY DU.unUser, DU.nbEtoiles, nufs, DU.dateDebut, DU.dateFin ORDER BY nufs DESC, temps ASC;', [id], (error, results, fields) => {
+      connection.query('SELECT DU.unUser, DU.nbEtoiles, calcul_nufs(DU.unDefi, DU.unUser) AS nufs, TIMESTAMPDIFF(MINUTE, DU.dateDebut, DU.dateFin) AS temps FROM Defiuser AS DU INNER JOIN Defi AS D ON D.idDefi = DU.unDefi WHERE D.titre = ? GROUP BY DU.unUser, DU.nbEtoiles, nufs, DU.dateDebut, DU.dateFin ORDER BY nufs DESC, temps ASC;', [id], (error, results, fields) => {
         if (error) {
           res.status(500).json({ error: 'Erreur lors de la récupération des données depuis la base de données' });
           console.error('Erreur lors de la récupération des données depuis la base de données', error);
@@ -125,6 +128,7 @@ app.delete('/api/defis/:idDefi', (req, res) => {
   });
 });
 
+//Points d'entrée de l'API pour User
 app.get('/api/users', (req, res) => {
   connection.query('SELECT * FROM User', (error, results) => {
     if (error) {
@@ -199,6 +203,7 @@ app.post('/api/users/change-password', (req, res) => {
   });
 });
 
+
 app.get('/api/users/get-email/:email', (req, res) => {
   const { email } = req.params;
   console.log(email);
@@ -256,6 +261,7 @@ app.get('/api/users/get-pseudo/:pseudo', (req, res) => {
     res.json(results[0]);
   });
 });
+
 
 //Points d'entrée de l'API pour Stat
 app.get('/api/stats', (req, res) => {
@@ -336,26 +342,26 @@ app.get('/api/defiUsers/count', (req, res) => {
 
 app.post('/api/defiUsers', (req, res) => {
   const { unUser, unDefi, dateDebut, dateFin, nbEtoiles } = req.body;
-  const query = 'INSERT INTO DefiUser (unUser, unDefi, dateDebut, dateFin, nbEtoiles) VALUES (?, ?, ?, ?, ?)';
+  const query = 'INSERT INTO DefiUser (unUser, unDefi, dateDebut, dateFin, nbEtoiles) VALUES (?, ?, TIMESTAMP(?[0], ?[1]), ?, ?)';
   connection.query(query, [unUser, unDefi, dateDebut, dateFin, nbEtoiles], (error, results) => {
     if (error) {
       res.status(500).json({ error: 'Erreur lors de l\'ajout de la relation utilisateur-défi à la base de données' });
       console.error('Erreur lors de l\'ajout de la relation utilisateur-défi à la base de données', error);
       return;
     }
-    // Update stats
-    connection.query(
-      'UPDATE Stat SET nbDefis = nbDefis + 1, nbEtoiles = nbEtoiles + ? WHERE unUser = ?',
-      [nbEtoilesObtenu, unUser],
-      (updateError) => {
-        if (updateError) {
-          res.status(500).json({ error: 'Erreur lors de la mise à jour des statistiques dans la base de données' });
-          console.error('Erreur lors de la mise à jour des statistiques dans la base de données', updateError);
-          return;
-        }
-        res.status(201).json({ message: 'Relation utilisateur-défi ajoutée avec succès et statistiques mises à jour' });
-      }
-    );
+  });
+});
+
+app.post('/api/defiUsers2', (req, res) => {
+  const { unUser, unDefi, dateDebutD, dateDebutH, dateFin, nbEtoiles } = req.body;
+  const query = 'INSERT INTO DefiUser (unUser, unDefi, dateDebut, dateFin, nbEtoiles) VALUES (?, ?, TIMESTAMP(?, ?), ?, ?)';
+  connection.query(query, [unUser, unDefi, dateDebutD, dateDebutH, dateFin, nbEtoiles], (error, results) => {
+    if (error) {
+      res.status(500).json({ error: 'Erreur lors de l\'ajout de la relation utilisateur-défi à la base de données' });
+      console.error('Erreur lors de l\'ajout de la relation utilisateur-défi à la base de données', error);
+      return;
+    }
+    res.status(200).json({ message: "Insertion réussi."});
   });
 });
 
@@ -366,21 +372,9 @@ app.delete('/api/defiUsers/:unUser/:unDefi', (req, res) => {
       res.status(500).json({ error: 'Erreur lors de la suppression de la relation utilisateur-défi de la base de données' });
       return;
     }
-    // Update stats
-    connection.query(
-      'UPDATE Stat SET nbDefis = nbDefis - 1, nbEtoiles = nbEtoiles - (SELECT nbEtoilesObtenu FROM DefiUser WHERE unUser = ? AND unDefi = ?) WHERE unUser = ?',
-      [unUser, unDefi, unUser],
-      (updateError) => {
-        if (updateError) {
-          res.status(500).json({ error: 'Erreur lors de la mise à jour des statistiques dans la base de données' });
-          console.error('Erreur lors de la mise à jour des statistiques dans la base de données', updateError);
-          return;
-        }
-        res.status(200).json({ message: 'Relation utilisateur-défi supprimée avec succès et statistiques mises à jour' });
-      }
-    );
   });
 });
+
 app.get('/api/defiUsers/:unUser', (req, res) => {
   const { unUser } = req.params;
   connection.query('SELECT * FROM DefiUser WHERE unUser = ?', [unUser], (error, results) => {
@@ -439,4 +433,30 @@ app.get('/api/defiUsers/time/:pseudo/:idDefi', (req, res) => {
       }
     }
   );
+});
+
+app.get('/api/getEtoiles/:pseudo/:defi/:nbEtoiles', (req, res) => {
+  const {pseudo, defi, nbEtoiles} = req.params;
+
+  const formatDate = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()+2).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const secondes = String(date.getSeconds()).padStart(2, '0');
+    return [`${year}-${month}-${day}`, `${hours}:${minutes}:${secondes}`];
+  };
+  const date = formatDate(new Date());
+  connection.query('UPDATE DefiUser SET nbEtoiles = ?, dateFin = TIMESTAMP(?, ?) WHERE unUser = ? AND unDefi = ?;', [nbEtoiles, date[0], date[1], pseudo, defi], (error, results) => {
+    if (error) {
+      return res.status(500).json({ error: 'Erreur lors de la récupération de la relation utilisateur-défi depuis la base de données'});;
+    }
+  });
+  res.send(`
+    <script>
+      localStorage.removeItem('defi');
+      window.location.replace('http://localhost:3000/defis/${defi}/');
+    </script>
+  `);
 });

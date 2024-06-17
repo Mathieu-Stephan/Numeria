@@ -39,37 +39,122 @@ app.post('/execute', (req, res) => {
   });
 });
 
-app.post('/verify', (req, res) => {
+app.post('/verify/:pseudo/:defi', async (req, res) => {
   const { code } = req.body;
+  const { pseudo, defi } = req.params;
   console.log({ code });
   const testPath = '/app/test-repo/';
+  const emptyPath = '/app/empty-repo/';
+  const invalidPath = '/app/invalid-repo/';
+  let nbEtoiles = 0;
 
-  const fullCode = `
-    const fs = require('fs');
-    const path = require('path');
+  // Fonction pour exécuter du code dans un fichier temporaire
+  const executeCode = (code) => {
+    return new Promise((resolve, reject) => {
+      fs.writeFileSync('full_user_code.js', code);
+      exec('node full_user_code.js', (error, stdout, stderr) => {
+        if (error) {
+          reject(stderr);
+        } else {
+          resolve(stdout);
+        }
+      });
+    });
+  };
 
-    ${code}
+  try {
+    // Test 1: Vérification de la structure de retour
+    let fullCode = `
+      const fs = require('fs');
+      const path = require('path');
 
-    try {
-      const result = detectWord("abracadabra", '${testPath}', true, true);
-      console.assert(Array.isArray(result) && result.length === 2, 'Return value should be an array of two elements');
-      console.assert(result[0].length === 3, 'Test failed');
-      console.log('Test Succeed');
-    } catch (error) {
-      console.error('Error executing the function:', error);
-    }
-  `;
+      ${code}
 
-  fs.writeFileSync('full_user_code.js', fullCode);
+      try {
+        const result = detectWord("abracadabra", '${testPath}', true, true);
+        console.assert(Array.isArray(result) && result.length === 2, 'Return value should be an array of two elements');
+        console.assert(result[0].length === 3, 'Test failed');
+        console.log('Test Succeed');
+      } catch (error) {
+        console.error('Error executing the function:', error);
+        throw error;
+      }
+    `;
 
-  exec('node full_user_code.js', (error, stdout, stderr) => {
-    if (error) {
-      return res.json({ success: false, output: stderr });
-    }
-    res.json({ success: true, output: stdout });
-    console.log(stdout);
-  });
+    await executeCode(fullCode);
+    nbEtoiles += 1;
+    console.log("1ère étoile.");
+
+  } catch (error) {
+    console.log("Test 1 échoué :", error);
+  }
+
+  try {
+    // Test 2: Vérification de la gestion d'un dossier inexistant
+    const fullCodeInvalid = `
+      const fs = require('fs');
+      const path = require('path');
+
+      ${code}
+
+      try {
+        const result = detectWord("abracadabra", '${invalidPath}', true, true);
+        console.log('Test failed: no error thrown for non-existent directory');
+        throw new Error('Test failed: no error thrown for non-existent directory');
+      } catch (error) {
+        console.assert(error.message.includes('Le chemin du dossier renseigné'), 'Test Succeeded: correct error message for non-existent directory');
+      }
+    `;
+
+    await executeCode(fullCodeInvalid);
+    nbEtoiles += 1;
+    console.log("2ème étoile.");
+
+  } catch (error) {
+    console.log("Test 2 échoué :", error);
+  }
+
+  try {
+    // Test 3: Vérification de la gestion d'un dossier vide
+    const fullCodeEmpty = `
+      const fs = require('fs');
+      const path = require('path');
+
+      ${code}
+
+      try {
+        const result = detectWord("abracadabra", '${emptyPath}', true, true);
+        console.assert(Array.isArray(result) && result.length === 2, 'Return value should be an array of two elements');
+        console.assert(result[0].length === 0, 'Test failed');
+        console.log('Test Succeed');
+      } catch (error) {
+        console.error('Error executing the function:', error);
+        throw error;
+      }
+    `;
+
+    await executeCode(fullCodeEmpty);
+    nbEtoiles += 1;
+    console.log("3e étoile.");
+
+  } catch (error) {
+    console.log("Test 3 échoué :", error);
+  }
+
+  res.json({ redirectUrl: `http://localhost:3012/redirectStars/${pseudo}/${defi}/${nbEtoiles}` });
 });
+
+
+app.get('/redirectStars/:pseudo/:defi/:nbEtoiles', (req, res) => {
+  const {pseudo, defi, nbEtoiles} = req.params;
+  res.send(`
+    <script>
+      localStorage.removeItem("pseudo");
+      localStorage.removeItem("defi");
+      window.location.replace("http://localhost:3001/api/getEtoiles/${pseudo}/${defi}/${nbEtoiles}");
+    </script>
+  `);
+})
 
 app.post('/upload-directory', upload.array('files'), (req, res) => {
   const files = req.files;
