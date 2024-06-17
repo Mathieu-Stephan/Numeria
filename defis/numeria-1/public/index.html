@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Défi - Correcteur orthographique</title>
+  <link rel="stylesheet" href="style.css">
+  <script>
+    if(!localStorage.getItem("pseudo") || !localStorage.getItem("defi") || localStorage.getItem("defi") != 1) {
+      window.location.replace("http://localhost:3011/redirect");
+    }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h1>Défi - Correcteur orthographique</h1>
+    <textarea id="codeInput" rows="10" cols="80">
+// Écrivez votre code ici
+function correcteurOrthographique(mot, dictionnaire, seuil) {
+    // TODO: Implémenter la logique de correcteur orthographique ici
+    // return "mot corrigé";
+}
+    </textarea>
+    <br>
+    <div class="button-container">
+      <button id="execButton">Éxécuter</button>
+      <button id="verifyButton">Vérifier</button>
+    </div>
+    <pre id="output"></pre>
+  </div>
+  <script>
+    document.getElementById('execButton').addEventListener('click', async () => {
+      const code = document.getElementById('codeInput').value.trim();
+      const response = await fetch('/execute', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ code })
+      });
+      const result = await response.json();
+      document.getElementById('output').textContent = result.output;
+    });
+
+    document.getElementById('verifyButton').addEventListener('click', async () => {
+      const code = document.getElementById('codeInput').value.trim();
+      const pseudo = localStorage.getItem('pseudo');
+      const defi = localStorage.getItem('defi');
+      const response = await fetch(`/verify/${pseudo}/${defi}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ code })
+      });
+      const result = await response.json();
+      if (result.redirectUrl) {
+        window.location.replace(result.redirectUrl);
+      } else {
+        document.getElementById('output').textContent = result.output;
+      }
+    });
+  </script>
+</body>
+</html>

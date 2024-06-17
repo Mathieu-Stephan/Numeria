@@ -1,0 +1,65 @@
+// Fonction principale de correction orthographique
+function correcteurOrthographique(phrase, dictionnaire, seuil = 2) {
+  // Fonction pour calculer la distance de Levenshtein entre deux chaînes
+  function distanceLevenshtein(a, b) {
+    const matrix = Array.from({ length: a.length + 1 }, () => []);
+
+    for (let i = 0; i <= a.length; i++) {
+      for (let j = 0; j <= b.length; j++) {
+        if (i === 0) {
+          matrix[i][j] = j;
+        } else if (j === 0) {
+          matrix[i][j] = i;
+        } else {
+          matrix[i][j] = Math.min(
+            matrix[i - 1][j] + 1, // Supprimer
+            matrix[i][j - 1] + 1, // Insérer
+            matrix[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1) // Substituer
+          );
+        }
+      }
+    }
+
+    return matrix[a.length][b.length];
+  }
+
+  // Fonction pour proposer des suggestions basées sur la distance de Levenshtein
+  function suggererMots(mot, dictionnaire, seuil) {
+    const suggestions = [];
+    for (const motCorrect of dictionnaire) {
+      const distance = distanceLevenshtein(mot, motCorrect);
+      if (distance <= seuil) {
+        suggestions.push({ mot: motCorrect, distance });
+      }
+    }
+    suggestions.sort((a, b) => a.distance - b.distance); // Trier par distance
+    return suggestions.map(suggestion => suggestion.mot);
+  }
+
+  // Fonction pour corriger un mot
+  function corrigerMot(mot) {
+    if (dictionnaire.includes(mot)) {
+      return { motCorrige: mot, suggestions: [] };
+    } else {
+      const suggestions = suggererMots(mot, dictionnaire, seuil);
+      if (suggestions.length > 0) {
+        return { motCorrige: suggestions[0], suggestions };
+      } else {
+        return { motCorrige: mot, suggestions: [] };
+      }
+    }
+  }
+
+  const mots = phrase.split(' ');
+  const motsCorriges = mots.map(mot => corrigerMot(mot));
+
+  return [motsCorriges.map(result => result.motCorrige).join(' '), motsCorriges.map(result => result.suggestions)];
+}
+
+// Exemple d'utilisation
+const dictionnaire = ["bonjour", "monde", "chat", "chien", "maison", "voiture"];
+const phraseAvecFautes = "bonjor le moned";
+const seuilSimilarite = 2;
+const resultat = correcteurOrthographique(phraseAvecFautes, dictionnaire, seuilSimilarite);
+
+console.log(resultat);

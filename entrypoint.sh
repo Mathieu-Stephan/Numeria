@@ -2,7 +2,7 @@
 
 BASE_PATH="/app/defis"
 
-PORT=3012
+PORT=3011
 
 start_containers() {
   for DIR in "$BASE_PATH"/*; do
