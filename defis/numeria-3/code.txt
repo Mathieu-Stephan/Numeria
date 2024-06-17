@@ -1,0 +1,62 @@
+// Fonction principale de génération de mot de passe
+function generatePassword(length, excludedChars) {
+  // Vérifier que la longueur est suffisante
+  if (length < 8) {
+    return "La longueur du mot de passe doit être supérieur à 8 caractères !";
+  }
+
+  // Définir les différents types de caractères
+  const lowerCase = "abcdefghijklmnopqrstuvwxyz";
+  const upperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const numbers = "0123456789";
+  const symbols = "!@#$%^&*()_+[]{}|;:',.<>?/`~";
+
+  // Combiner tous les types de caractères
+  let allChars = lowerCase + upperCase + numbers + symbols;
+
+  // Exclure les caractères spécifiés par l'utilisateur
+  if (excludedChars) {
+    allChars = allChars.split('').filter(char => !excludedChars.includes(char)).join('');
+  }
+
+  // Vérifier qu'il reste des caractères valides pour générer le mot de passe
+  if (allChars.length === 0) {
+    return "Erreur : Aucun caractère valide disponible pour générer le mot de passe.";
+  }
+
+  // Fonction pour générer un caractère aléatoire parmi un ensemble de caractères donné
+  const getRandomChar = (chars) => {
+    const randomIndex = Math.floor(Math.random() * chars.length);
+    return chars[randomIndex];
+  };
+
+  // Générer le mot de passe en garantissant la présence d'au moins un caractère de chaque type
+  let password = '';
+  password += getRandomChar(lowerCase);
+  password += getRandomChar(upperCase);
+  password += getRandomChar(numbers);
+  password += getRandomChar(symbols);
+
+  // Compléter le mot de passe avec des caractères aléatoires parmi les caractères restants
+  for (let i = password.length; i < length; i++) {
+    password += getRandomChar(allChars);
+  }
+
+  // Mélanger les caractères du mot de passe pour garantir un résultat aléatoire
+  password = password.split('').sort(() => Math.random() - 0.5).join('');
+
+  return password;
+}
+
+// Fonction pour demander la longueur et les caractères exclus à l'utilisateur
+function getPasswordInput() {
+  const length = parseInt(prompt("Entrez la longueur du mot de passe :"), 10);
+  const excludedChars = prompt("Entrez les caractères à exclure (si aucun, laissez vide) :");
+
+  return { length, excludedChars };
+}
+
+// Utiliser la fonction pour générer un mot de passe en fonction des entrées de l'utilisateur
+const { length, excludedChars } = getPasswordInput();
+const password = generatePassword(length, excludedChars);
+console.log("Mot de passe généré :", password);

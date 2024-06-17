@@ -3,14 +3,10 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 const path = require('path');
 const { exec } = require('child_process');
-const multer = require('multer');
 const cors = require('cors');
 
 const app = express();
-const PORT = 3012;
-
-const storage = multer.memoryStorage();
-const upload = multer({ storage });
+const PORT = 3013;
 
 app.use(bodyParser.json());
 app.use(express.static('public'));
@@ -66,18 +62,14 @@ app.post('/verify/:pseudo/:defi', async (req, res) => {
     // Test 1: Vérification de la structure de retour
     let fullCode = `
       const fs = require('fs');
-      const path = require('path');
 
       ${code}
 
       try {
-        const result = detectWord("abracadabra", '${testPath}', true, true);
-        console.assert(Array.isArray(result) && result.length === 2, 'Return value should be an array of two elements');
-        console.assert(result[0].length === 3, 'Test failed');
-        console.log('Test Succeed');
+        const result = generatePassword(5, []);
+        console.error('Test Failed: only password with minimum 8 characters');
       } catch (error) {
-        console.error('Error executing the function:', error);
-        throw error;
+        console.assert(error.message.includes(''), 'Test Succeeded: correct error message for wrong password length');
       }
     `;
 
@@ -93,15 +85,15 @@ app.post('/verify/:pseudo/:defi', async (req, res) => {
     // Test 2: Vérification de la gestion d'un dossier inexistant
     const fullCodeInvalid = `
       const fs = require('fs');
-      const path = require('path');
 
       ${code}
 
       try {
-        const result = detectWord("abracadabra", '${invalidPath}', true, true);
-        console.log('Test failed: no error thrown for non-existent directory');
+        const result = generatePassword(9, ["motdepasse"]);
+        console.assert(result[0].includes("motdepasse"), 'Test Failed');
+        console.log('Test Succeed');
       } catch (error) {
-        console.assert(error.message.includes(''), 'Test Succeeded: correct error message for non-existent directory');
+        console.error('Test failed');
       }
     `;
 
@@ -122,13 +114,11 @@ app.post('/verify/:pseudo/:defi', async (req, res) => {
       ${code}
 
       try {
-        const result = detectWord("abracadabra", '${emptyPath}', true, true);
-        console.assert(Array.isArray(result) && result.length === 2, 'Return value should be an array of two elements');
-        console.assert(result[0].length === 0, 'Test failed');
+        const result = generatePassword(9, []);
+        console.assert(typeof(result[0]) == 'string', 'Test failed');
         console.log('Test Succeed');
       } catch (error) {
-        console.error('Error executing the function:', error);
-        throw error;
+        console.error('Test failed');
       }
     `;
 
@@ -140,7 +130,7 @@ app.post('/verify/:pseudo/:defi', async (req, res) => {
     console.log("Test 3 échoué :", error);
   }
 
-  res.json({ redirectUrl: `http://localhost:3012/redirectStars/${pseudo}/${defi}/${nbEtoiles}` });
+  res.json({ redirectUrl: `http://localhost:3013/redirectStars/${pseudo}/${defi}/${nbEtoiles}` });
 });
 
 
@@ -154,26 +144,6 @@ app.get('/redirectStars/:pseudo/:defi/:nbEtoiles', (req, res) => {
     </script>
   `);
 })
-
-app.post('/upload-directory', upload.array('files'), (req, res) => {
-  const files = req.files;
-  let relativePaths = req.body.relativePaths; // Nom du champ du tableau
-
-  if (!Array.isArray(relativePaths)) {
-    relativePaths = [relativePaths];
-  }
-
-  files.forEach((file, index) => {
-    const relativePath = relativePaths[index];
-    const relativeDir = relativePath.split('/').slice(1).join('/'); // Remove the root directory
-    const dir = path.join('user-repo', path.dirname(relativeDir));
-    fs.mkdirSync(dir, { recursive: true });
-    fs.writeFileSync(path.join(dir, path.basename(relativeDir)), file.buffer);
-  });
-
-  console.log('Fichiers reçus et enregistrés avec succès.');
-  res.sendStatus(200);
-});
 
 app.get('/redirect', (req, res) => {
   res.send(`
